@@ -1,0 +1,32 @@
+{
+  "ok": true,
+  "categories": [
+    {
+      "id": 1,
+      "name": "AI Agents",
+      "color": "#06b6d4",
+      "tokens": [
+        "axiomai",
+        "alphax",
+        "byteflow"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Memecoins",
+      "color": "#f43f5e",
+      "tokens": [
+        "novacoin",
+        "metridot"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Infrastructure",
+      "color": "#a855f7",
+      "tokens": [
+        "zorbax"
+      ]
+    }
+  ]
+}

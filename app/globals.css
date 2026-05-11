@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0a0e1a;
+  --panel: #0f1623;
+  --border: #164e63;
+  --cyan: #06b6d4;
+  --violet: #a78bfa;
+}
+
+body {
+  background: var(--bg);
+  color: #e2e8f0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}

@@ -1,0 +1,41 @@
+# dependencias
+node_modules/
+
+# next build cache
+.next/
+out/
+
+# typescript incremental cache
+*.tsbuildinfo
+
+# harness local de Claude Code (settings, lockfiles, skills)
+.claude/
+.agents/
+skills-lock.json
+
+# screenshots / mockups privados del producto VIP (no auditables)
+0snapsite/
+
+# scripts internos y datos generados
+gen_global_dummy.py
+
+# documentos privados internos: analisis vs competencia, planes,
+# investigaciones, instrucciones de copilots, ideas manuales
+studyproject_*.md
+v[0-9]_studyproject_*.md
+instructionscopilot.md
+ideasmanual.md
+
+# env locales y secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# logs y temporales del OS
+*.log
+.DS_Store
+Thumbs.db
+
+# Dockerfile NO se ignora (es parte del deploy publico)

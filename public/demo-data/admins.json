@@ -1,0 +1,12 @@
+{
+  "_notice": "Lista de pubkeys admin. Source of truth file-based (sin DB).",
+  "_format": "pubkey base58 (32 bytes), label libre, added_on ISO date",
+  "_usage": "El front lee este archivo y muestra badge ADMIN en el navbar si la wallet conectada esta en la lista.",
+  "admins": [
+    {
+      "pubkey": "REPLACE_WITH_REAL_PUBKEY_BASE58",
+      "label": "Owner",
+      "added_on": "2026-05-10"
+    }
+  ]
+}

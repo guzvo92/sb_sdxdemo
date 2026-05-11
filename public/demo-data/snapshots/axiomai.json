@@ -1,0 +1,23 @@
+{
+  "liq_bigpool": 27.37,
+  "liq_top1_10": 20.31,
+  "liq_top11_20": 13.08,
+  "liq_top21_50": 10.07,
+  "liq_top51_100": 6.2,
+  "liq_others": 22.97,
+  "acc_over50000": 11,
+  "acc_10000to50000": 70,
+  "acc_5000to10000": 49,
+  "acc_1000to5000": 112,
+  "acc_500to1000": 576,
+  "acc_100to500": 725,
+  "acc_under100": 4680,
+  "tok_over100M": 1,
+  "tok_10Mto100M": 1,
+  "tok_5Mto10M": 4,
+  "tok_1Mto5M": 19,
+  "tok_100kto1M": 24,
+  "tok_10kto100k": 216,
+  "tok_1kto10k": 379,
+  "tok_100to1k": 1160
+}
