@@ -202,13 +202,101 @@ export class Sdkrout_back {
     }
   }
 
-  // Devuelve el agregado multi-token del global_history. Si el JSON ya
-  // tiene los tokens reales, los devuelve directo.
+  // Construye el agregado multi-token leyendo TODOS los folders de
+  // snapshot del index (un timestamp por folder, un slug por archivo).
+  // El shape de salida es el que /globalhackathon (buildTimestamp) espera:
+  // tokens[].timestamps[] con perc_* (liquidity) y nholders_* (acc buckets
+  // remapeados) + perc_nholders_* calculados sobre nholders_full.
   async fetch_globalrun_history(): Promise<{ ok: boolean; tokens: any[] }> {
     try {
-      const r = await fetch("/demo-data/global/global_history.json", { cache: "no-store" });
-      const d = await r.json();
-      return { ok: !!d.ok, tokens: Array.isArray(d.tokens) ? d.tokens : [] };
+      const [idx, targetsRes] = await Promise.all([
+        getIdx(),
+        fetch("/targets.json", { cache: "no-store" })
+          .then(r => r.ok ? r.json() : { targets: [] })
+          .catch(() => ({ targets: [] })),
+      ]);
+      const folders = idx.snapshots.folders;
+      const targets: { slug: string; ca: string }[] = (targetsRes?.targets || [])
+        .filter((t: any) => t?.slug && t?.ca && String(t.ca).length >= 32 && !String(t.ca).startsWith("PASTE_"));
+      if (folders.length === 0 || targets.length === 0) {
+        return { ok: false, tokens: [] };
+      }
+
+      // Calcula % seguro (n / total * 100) con 2 decimales.
+      const pct = (n: number, total: number): number =>
+        total > 0 ? +((n / total) * 100).toFixed(2) : 0;
+
+      // Mapea un snapshot rich (acc_*, liq_*, nholders_*) al row plano que
+      // buildTimestamp consume.
+      const toRow = (s: any): any => {
+        const nholdersFull = Number(s?.nholders_full || 0);
+        const over50000    = Number(s?.acc_over50000    || 0);
+        const r10kto50k    = Number(s?.acc_10000to50000 || 0);
+        const r5kto10k     = Number(s?.acc_5000to10000  || 0);
+        const r1kto5k      = Number(s?.acc_1000to5000   || 0);
+        const r500to1k     = Number(s?.acc_500to1000    || 0);
+        const r100to500    = Number(s?.acc_100to500     || 0);
+        const under100     = Number(s?.nholders_under100 || s?.acc_under100 || 0);
+        return {
+          runts:             Number(s?.runts || 0),
+          // Liquidity (1:1 con liq_*)
+          perc_bigpool:      Number(s?.liq_bigpool   || 0),
+          perc_top1_10:      Number(s?.liq_top1_10   || 0),
+          perc_top11_20:     Number(s?.liq_top11_20  || 0),
+          perc_top21_50:     Number(s?.liq_top21_50  || 0),
+          perc_top51_100:    Number(s?.liq_top51_100 || 0),
+          perc_others:       Number(s?.liq_others    || 0),
+          // Counts (acc_* remapeados a nholders_*)
+          nholders_full:          nholdersFull,
+          nholders_over100:       Number(s?.nholders_over100 || 0),
+          nholders_under100:      under100,
+          nholders_over50000:     over50000,
+          nholders_10000to50000:  r10kto50k,
+          nholders_5000to10000:   r5kto10k,
+          nholders_1000to5000:    r1kto5k,
+          nholders_500to1000:     r500to1k,
+          nholders_100to500:      r100to500,
+          // % calculados sobre nholders_full
+          perc_nholders_over50000:    pct(over50000,  nholdersFull),
+          perc_nholders_10000to50000: pct(r10kto50k,  nholdersFull),
+          perc_nholders_5000to10000:  pct(r5kto10k,   nholdersFull),
+          perc_nholders_1000to5000:   pct(r1kto5k,    nholdersFull),
+          perc_nholders_500to1000:    pct(r500to1k,   nholdersFull),
+          perc_nholders_100to500:     pct(r100to500,  nholdersFull),
+          perc_nholders_under100:     pct(under100,   nholdersFull),
+        };
+      };
+
+      // Por cada folder cronologico, por cada slug, fetch del snapshot.
+      // Agrupa por slug -> arr de rows ordenados por runts.
+      const grouped: Record<string, any[]> = {};
+      for (const slug of targets.map(t => t.slug)) grouped[slug] = [];
+
+      const jobs: Array<Promise<{ slug: string; row: any | null }>> = [];
+      for (const folder of folders) {
+        for (const t of targets) {
+          jobs.push(
+            fetch(`/demo-data/snapshots/${folder}/${t.slug}.json`, { cache: "no-store" })
+              .then(r => r.ok ? r.json() : null)
+              .catch(() => null)
+              .then(snap => ({ slug: t.slug, row: snap ? toRow(snap) : null })),
+          );
+        }
+      }
+      const results = await Promise.all(jobs);
+      for (const r of results) {
+        if (r.row) grouped[r.slug].push(r.row);
+      }
+      // Ordena cada serie por runts asc.
+      for (const slug of Object.keys(grouped)) {
+        grouped[slug].sort((a, b) => a.runts - b.runts);
+      }
+
+      const tokens = targets
+        .map(t => ({ token_name: t.slug, timestamps: grouped[t.slug] }))
+        .filter(t => t.timestamps.length > 0);
+
+      return { ok: true, tokens };
     } catch {
       return { ok: false, tokens: [] };
     }

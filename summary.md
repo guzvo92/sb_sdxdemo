@@ -1,7 +1,7 @@
 # summary.md — SatellDex Demo
-# version: 3.0 (12-may-26 09:18)
-# tokens: ~8818
-# lineas: 687
+# version: 3.1 (12-may-26 09:23)
+# tokens: ~8993
+# lineas: 696
 
 > Concept proof of **on-chain Solana holder intelligence** with community-
 > driven token tracking. Built for the Colosseum Solana Frontier Hackathon
@@ -153,9 +153,16 @@ sb_satelldexdemo/
 │   │                              calc_quote_value, quotetoken_symbol,
 │   │                              createdAt_formatted. pools_high filtra por
 │   │                              liq_usd > $5k y limita a 20 (orden desc
-│   │                              por liquidez). Reemplaza el SDK del
-│   │                              backend prod en hackathonview +
-│   │                              globalhackathon
+│   │                              por liquidez). fetch_globalrun_history
+│   │                              reconstruye el agregado multi-token al
+│   │                              vuelo: lista folders via /api/snap_index,
+│   │                              cruza con targets.json, lee
+│   │                              snapshots/<folder>/<slug>.json en paralelo
+│   │                              y emite tokens[].timestamps[] con shape
+│   │                              compatible (perc_* desde liq_*, nholders_*
+│   │                              desde acc_*, perc_nholders_* calculados).
+│   │                              Reemplaza el SDK del backend prod en
+│   │                              hackathonview + globalhackathon
 │   ├── layout/
 │   │   └── navbarhome.tsx      ← navbar fijo de la landing · drawer mobile
 │   │                              custom (sin Bootstrap) · admin badge via
@@ -242,11 +249,12 @@ sb_satelldexdemo/
 │       ├── community_requests.json      ← source of truth del CRUD
 │       ├── snap_progress.json           ← estado vivo del scrape en curso
 │       └── global/
-│           ├── global_history.json      ← 1 snapshot per token (no time-series)
+│           ├── global_history.json      ← LEGACY huerfano: ya no consumido
+│           │                              (fetch_globalrun_history del SDK
+│           │                              reconstruye time-series leyendo
+│           │                              todos los folders snapshots/<fecha>)
 │           └── categories.json          ← una sola categoria "Memes" con
-│                                          los 8 slugs reales (limpieza
-│                                          12-may-26 removio AI Agents +
-│                                          Memecoins + Infrastructure dummy)
+│                                          los 8 slugs reales
 ├── makesnap.ts                 ← script standalone Helius (top 100 holders +
 │                                 snapshot rico por CA). Disparado por
 │                                 /api/regenerate F2 via child_process.spawn,
@@ -424,8 +432,9 @@ Componente del prod          | Adaptacion en demo
 -----------------------------|-----------------------------------------------
 SDK Sdkrout_back             | Fetch directo a JSONs estaticos en /demo-data/
                              |
-TokenSelector                | Lee categories.json + global_history.json
-                             | (no /api/category_list ni /api/globalrun_history).
+TokenSelector                | Lee categories.json + dexscraptokens del
+                             | folder mas reciente (no /api/category_list
+                             | ni /api/globalrun_history).
                              |
 MetricsRoller                | No usa /api/db_metrics_summary: computa
                              | ntokens (targets.json) + nsnapshots/ndays
