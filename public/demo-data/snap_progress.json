@@ -1,14 +1,78 @@
 {
-  "status": "error",
-  "started_at": "2026-05-12T07:18:10.762Z",
-  "started_at_ts": 1778570290,
-  "last_update": "2026-05-12T07:18:10.766Z",
-  "phase": "init",
-  "current_idx": 0,
-  "current_total": 0,
+  "status": "done",
+  "started_at": "2026-05-12T07:36:07.486Z",
+  "started_at_ts": 1778571367,
+  "last_update": "2026-05-12T07:36:44.190Z",
+  "phase": "complete",
+  "current_idx": 8,
+  "current_total": 8,
   "current_token": null,
-  "current_step": "booting",
-  "completed": [],
-  "elapsed_ms": 4,
-  "error": "missing_helius_key (set HELIUS_API_KEY env var)"
+  "current_step": "8/8 ok · 0 fail",
+  "completed": [
+    {
+      "slug": "buck",
+      "ok": true,
+      "elapsed_ms": 3034,
+      "holders_count": 11214,
+      "symbol": "BUCK"
+    },
+    {
+      "slug": "fartcoin",
+      "ok": true,
+      "elapsed_ms": 5399,
+      "holders_count": 19966,
+      "symbol": "Fartcoin "
+    },
+    {
+      "slug": "giga",
+      "ok": true,
+      "elapsed_ms": 6731,
+      "holders_count": 19982,
+      "symbol": "GIGA"
+    },
+    {
+      "slug": "popcat",
+      "ok": true,
+      "elapsed_ms": 5741,
+      "holders_count": 19974,
+      "symbol": "POPCAT"
+    },
+    {
+      "slug": "retardio",
+      "ok": true,
+      "elapsed_ms": 5286,
+      "holders_count": 19954,
+      "symbol": "RETARDIO"
+    },
+    {
+      "slug": "weed",
+      "ok": true,
+      "elapsed_ms": 3047,
+      "holders_count": 11652,
+      "symbol": "WEED"
+    },
+    {
+      "slug": "usduc",
+      "ok": true,
+      "elapsed_ms": 3620,
+      "holders_count": 15697,
+      "symbol": "USDUC"
+    },
+    {
+      "slug": "hanta",
+      "ok": true,
+      "elapsed_ms": 3812,
+      "holders_count": 18669,
+      "symbol": "HANTA"
+    }
+  ],
+  "elapsed_ms": 36704,
+  "result": {
+    "summary": {
+      "processed": 8,
+      "ok": 8,
+      "fail": 0
+    },
+    "elapsed_ms": 36704
+  }
 }

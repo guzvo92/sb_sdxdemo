@@ -14,13 +14,6 @@ const WalletMultiButton = dynamic(
   { ssr: false }
 );
 
-interface Category {
-  id: number;
-  name: string;
-  color: string;
-  tokens: string[];
-}
-
 // Card grande VIP: link al dashboard /tracked del demo.
 export function VipCard() {
   return (
@@ -153,26 +146,48 @@ export function VipInterestButton() {
 }
 
 // Selector de tokens free, agrupado por categoria. En el demo, "free" =
-// todos los tokens listados en global_history.json (no hay separacion
-// free/vip a nivel API porque no hay API). Hace match contra categories.json
-// para colorearlos por categoria.
+// los slugs reales del demo (los 8 memes importados de la DB del prod).
+// Source of truth: public/targets.json. Si dexscraptokens.json tiene
+// metadata mas rica (symbol del scrape), prioriza ese label.
 export function Comp_TokenSelector() {
   const { connected } = useWallet();
   const [tokens,     setTokens]     = useState<string[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [symbolBySlug, setSymbolBySlug] = useState<Record<string, string>>({});
   const [loading,    setLoading]    = useState(true);
 
   useEffect(() => {
     async function load() {
       try {
         setLoading(true);
-        const [catRes, globalRes] = await Promise.all([
-          fetch("/demo-data/global/categories.json").then(r => r.json()),
-          fetch("/demo-data/global/global_history.json").then(r => r.json()),
+        // Pide el indice de fechas primero · si hay un folder mas reciente
+        // de dexscraptokens, fetcheo /demo-data/dexscraptokens/<latest>/all.json.
+        const idx = await fetch("/api/snap_index").then(r => r.json()).catch(() => null);
+        const dexFolder: string | null = idx?.dexscraptokens?.latest ?? null;
+        const [targetsRes, dexRes] = await Promise.all([
+          fetch("/targets.json").then(r => r.json()).catch(() => null),
+          dexFolder
+            ? fetch(`/demo-data/dexscraptokens/${dexFolder}/all.json`).then(r => r.json()).catch(() => null)
+            : Promise.resolve(null),
         ]);
-        const tokenNames: string[] = globalRes.tokens?.map((t: any) => t.token_name) || [];
-        setTokens(tokenNames);
-        if (catRes.ok) setCategories(catRes.categories || []);
+
+        // lista canonica de slugs viene de targets.json, ignorando placeholders
+        const tlist: any[] = Array.isArray(targetsRes?.targets) ? targetsRes.targets : [];
+        const slugs: string[] = [];
+        for (const t of tlist) {
+          const ca = String(t.ca ?? "");
+          if (ca.startsWith("PASTE_") || ca.length < 32) continue;
+          slugs.push(String(t.slug ?? ""));
+        }
+        setTokens(slugs);
+
+        // si dexscraptokens tiene symbol scrapeado, lo usamos como label
+        const map: Record<string, string> = {};
+        if (Array.isArray(dexRes?.tokens)) {
+          for (const t of dexRes.tokens) {
+            if (t.slug && t.symbol) map[t.slug] = t.symbol;
+          }
+        }
+        setSymbolBySlug(map);
       } catch (err) {
         console.error(err);
       } finally {
@@ -182,15 +197,9 @@ export function Comp_TokenSelector() {
     load();
   }, []);
 
-  const tokenCatMap: Record<string, Category> = {};
-  for (const cat of categories) {
-    for (const tok of cat.tokens) {
-      tokenCatMap[tok] = cat;
-    }
-  }
-
-  const uncategorized = tokens.filter(tok => !tokenCatMap[tok]);
-
+  // Renderiza una seccion de tokens (chip por slug). Si dexscraptokens
+  // tiene symbol scrapeado para el slug, lo muestra como label principal
+  // y deja el slug como subtitulo.
   const renderTokenSection = (label: string, color: string, tokenList: string[]) => {
     if (tokenList.length === 0) return null;
     return (
@@ -205,27 +214,37 @@ export function Comp_TokenSelector() {
           </span>
         </div>
         <div className="freetokens-grid" style={{ display: "flex", flexWrap: "wrap", gap: "6px", justifyContent: "center" }}>
-          {tokenList.map((tok) => (
-            <a
-              key={tok}
-              href={`/tracked?token=${tok}`}
-              className="freetokens-chip"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                background: "#0f1623",
-                border: "1px solid #164e63",
-                borderRadius: "4px",
-                padding: "8px 16px",
-                textDecoration: "none",
-              }}
-            >
-              <span style={{ fontFamily: "monospace", fontSize: "11px", fontWeight: 700, color: "#e2e8f0", letterSpacing: "0.06em" }}>
-                {tok.toUpperCase()}
-              </span>
-            </a>
-          ))}
+          {tokenList.map((tok) => {
+            const sym = symbolBySlug[tok];
+            return (
+              <a
+                key={tok}
+                href={`/tracked?token=${tok}`}
+                className="freetokens-chip"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: "#0f1623",
+                  border: "1px solid #164e63",
+                  borderRadius: "4px",
+                  padding: "8px 16px",
+                  textDecoration: "none",
+                  gap: 6,
+                }}
+                title={tok}
+              >
+                <span style={{ fontFamily: "monospace", fontSize: "11px", fontWeight: 700, color: "#e2e8f0", letterSpacing: "0.06em" }}>
+                  {sym ? sym.toUpperCase() : tok.toUpperCase()}
+                </span>
+                {sym && (
+                  <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#64748b", letterSpacing: "0.04em" }}>
+                    {tok}
+                  </span>
+                )}
+              </a>
+            );
+          })}
         </div>
       </div>
     );
@@ -269,11 +288,15 @@ export function Comp_TokenSelector() {
 
       {loading ? (
         <div style={{ color: "#475569", fontFamily: "monospace", fontSize: "10px" }}>Loading...</div>
+      ) : tokens.length === 0 ? (
+        <div style={{ color: "#fbbf24", fontFamily: "monospace", fontSize: "10px" }}>
+          No targets configured · edit public/targets.json
+        </div>
       ) : (
-        <>
-          {categories.map(cat => renderTokenSection(cat.name, cat.color, cat.tokens))}
-          {uncategorized.length > 0 && renderTokenSection("Others", "#475569", uncategorized)}
-        </>
+        // Una sola seccion "Memes" — los 8 slugs del targets.json importados
+        // de la DB del prod sb_satelldex (categoria memes). Si en el futuro
+        // se agregan otras categorias al demo, agrupar aca.
+        renderTokenSection("Memes", "#f59e0b", tokens)
       )}
     </div>
   );

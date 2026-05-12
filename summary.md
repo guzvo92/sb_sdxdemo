@@ -1,7 +1,7 @@
 # summary.md — SatellDex Demo
-# version: 2.1 (12-may-26 01:18)
-# tokens: ~7900
-# lineas: 657
+# version: 2.3 (12-may-26 01:47)
+# tokens: ~8200
+# lineas: 674
 
 > Concept proof of **on-chain Solana holder intelligence** with community-
 > driven token tracking. Built for the Colosseum Solana Frontier Hackathon
@@ -143,10 +143,12 @@ sb_satelldexdemo/
 │   │   ├── comp_metricsroller.tsx ← roller infinito · computa metrics desde
 │   │   │                            tokens.json + global_history.json local
 │   │   ├── comp_tokenselector.tsx ← Comp_TokenSelector + VipCard +
-│   │   │                            VipInterestButton · lee categories.json
-│   │   │                            y global_history.json
+│   │   │                            VipInterestButton · lee targets.json
+│   │   │                            (lista canonica de slugs) + dexscraptokens.json
+│   │   │                            (symbol scrapeado para el label)
 │   │   ├── sec1_hero.tsx       ← hero completo (terminal + headline + roller
-│   │   │                          + VipCard + tokens/community + Vip tester)
+│   │   │                          fuera del container 1280 + VipCard +
+│   │   │                          tokens/community + Vip tester)
 │   │   ├── sec2_statsbar.tsx   ← tech stack stats (Meteora, Raydium, ...)
 │   │   ├── sec3_hexnode.tsx    ← node card con scan line · imagen
 │   │   │                          /assets/Node.png
@@ -195,7 +197,10 @@ sb_satelldexdemo/
 │       ├── dexscraptokens.json          ← output del scrape DexScreener (REGEN)
 │       └── global/
 │           ├── global_history.json      ← 1 snapshot per token (no time-series)
-│           └── categories.json          ← AI Agents / Memecoins / Infrastructure
+│           └── categories.json          ← una sola categoria "Memes" con
+│                                          los 8 slugs reales (limpieza
+│                                          12-may-26 removio AI Agents +
+│                                          Memecoins + Infrastructure dummy)
 ├── makesnap.ts                 ← script standalone Helius (top 100 holders +
 │                                 snapshot rico por CA). Disparado por
 │                                 /api/regenerate F2 via child_process.spawn,
@@ -282,6 +287,10 @@ Ruta                     | Mensaje firmado                              | Conten
 /api/snap_progress       | sin firma · lectura publica                  | Estado actual del snapshot en
                          |                                              |     curso (poleado cada 1s por
                          |                                              |     el navbar)
+/api/snap_index          | sin firma · lectura publica                  | Lista carpetas YYYY_MM_DD en
+                         |                                              |     snapshots/ + holders/ +
+                         |                                              |     dexscraptokens/ y devuelve
+                         |                                              |     el latest de cada uno
 /hackathonview           | (pendiente Fase 2 — no clonado todavia)      | 404 hoy · clone planeado
 /globalhackathon         | (pendiente Fase 2 — no clonado todavia)      | 404 hoy · clone planeado
 ```
@@ -300,8 +309,9 @@ Vista multi-token simplificada. 3 HUD tabs:
 ```
 Tab           | Contenido
 --------------|----------------------------------------------------------
-TOKENS        | Lista de los 6 tokens con su categoría (AI Agents,
-              | Memecoins, Infrastructure) + holders count + bigpool %
+TOKENS        | Lista de los 8 memes (buck/fartcoin/giga/popcat/retardio/
+              | weed/usduc/hanta) con su categoria unica "Memes" +
+              | holders count + bigpool %
               |
 LAST SNAPSHOT | 3 bar charts comparativos multi-token del snapshot
               | único actual:
@@ -382,9 +392,10 @@ banner hackathon  | CTA a /hackathonview y /globalhackathon para jueces del
                   | Solana Frontier Hackathon 2026.
                   |
 SecHero           | Terminal animado (Comp_TextAnimation) + headline gradient
-                  | + Comp_MetricsRoller (computa metrics desde JSONs locales)
+                  | + Comp_MetricsRoller full-bleed (fuera del container 1280)
                   | + VipCard (link /tracked) + Comp_TokenSelector (lee
-                  | categories.json + global_history.json) + SecCommunityReq
+                  | targets.json + dexscraptokens.json, una sola seccion
+                  | "Memes" con los 8 slugs reales) + SecCommunityReq
                   | (lee /api/community_request) + VipInterestButton (demo
                   | only, sin POST).
                   |
@@ -478,8 +489,14 @@ makesnap.ts (orquesta TODO secuencial, por token)
   F2 Helius DAS   -> getAsset (decimals/supply/price/symbol/name)
                      getTokenAccounts paginado (hasta MAX_PAGES=20,
                      1000 accounts/pag), agrupado por owner
-                     top 100 enriquecido -> holders/<slug>.json
-                     bucketize -> snapshots/<slug>.json
+                     top 100 enriquecido + bucketize.
+                     Persistencia limpia (sin LATEST sueltos):
+                       holders/<YYYY_MM_DD>/<slug>.json
+                       snapshots/<YYYY_MM_DD>/<slug>.json
+                       dexscraptokens/<YYYY_MM_DD>/all.json
+                     Cada run del mismo dia sobreescribe los archivos
+                     del dia (sin sufijo de runts). Front auto-detecta
+                     el folder mas reciente via GET /api/snap_index.
   Tiempo:  ~5-15s por token grande (depende de #pages)
            ~40-90s total para 8 tokens (secuencial)
   Requiere: HELIUS_API_KEY en .env.local (Next la carga, spawn la hereda)

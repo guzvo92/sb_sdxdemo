@@ -32,6 +32,32 @@ import {
 } from "./app/lib/helius";
 import { fetchDexScreenerToken } from "./app/lib/scraper";
 
+// Carga .env.local manualmente (sin dotenv) cuando makesnap se invoca via
+// `docker exec ... npx tsx makesnap.ts`. Ese proceso es nuevo y NO hereda
+// las env vars que Next inyecta al arrancar (solo el spawn desde Next sí).
+// Parser minimo: ignora comments y vacios, strip de comillas alrededor del
+// valor, no sobrescribe si la var ya esta en process.env (la del Next spawn
+// sigue teniendo prioridad).
+async function loadEnvLocal(cwd: string): Promise<void> {
+  try {
+    const raw = await readFile(path.join(cwd, ".env.local"), "utf-8");
+    for (const line of raw.split("\n")) {
+      const t = line.trim();
+      if (!t || t.startsWith("#")) continue;
+      const eq = t.indexOf("=");
+      if (eq < 0) continue;
+      const k = t.slice(0, eq).trim();
+      let v = t.slice(eq + 1).trim();
+      if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
+        v = v.slice(1, -1);
+      }
+      if (!process.env[k]) process.env[k] = v;
+    }
+  } catch {
+    // silencioso — si no existe .env.local, sigue con process.env actual
+  }
+}
+
 interface CliArgs {
   targetsPath:  string;
   outDir:       string;
@@ -76,6 +102,16 @@ const START_ISO = new Date().toISOString();
 function logStep(msg: string): void {
   const s = ((Date.now() - T0) / 1000).toFixed(2);
   console.log(`[t+${s.padStart(6)}s] ${msg}`);
+}
+
+// Carpeta de fecha YYYY_MM_DD basada en la hora local del server.
+// Usada para archivar snapshots/holders/dexscraptokens historicos.
+function dateFolder(): string {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${y}_${m}_${dd}`;
 }
 
 function parseArgs(argv: string[]): CliArgs {
@@ -201,20 +237,28 @@ async function processToken(
     const allEnriched = enrichHolders(raw, asset.supply, asset.price);
     const snap = buildSnapshotRich(allEnriched, asset);
 
-    // Write
+    // Write — layout limpio: solo <YYYY_MM_DD>/<slug>.json (sin sufijo
+    // de runts ni LATEST suelto). Cada run del mismo dia sobreescribe el
+    // archivo del slug. Para auto-detectar el folder mas reciente desde
+    // el front, usar GET /api/snap_index.
     if (dryRun) {
       logStep(`  [${slug}] dry-run · skip write`);
     } else {
       progress.phase = "writing";
       progress.current_step = `[F2] writing ${slug}`;
       await writeProgress();
-      const holdersPath  = path.join(outDir, "holders", `${slug}.json`);
-      const snapPath     = path.join(outDir, "snapshots", `${slug}.json`);
+      const folder = dateFolder();
+
+      const holdersPath = path.join(outDir, "holders", folder, `${slug}.json`);
+      const snapPath    = path.join(outDir, "snapshots", folder, `${slug}.json`);
+
       await mkdir(path.dirname(holdersPath), { recursive: true });
       await mkdir(path.dirname(snapPath), { recursive: true });
+
       await writeFile(holdersPath, JSON.stringify(enriched, null, 2));
       await writeFile(snapPath, JSON.stringify(snap, null, 2));
-      logStep(`  [${slug}] wrote holders/${slug}.json + snapshots/${slug}.json`);
+
+      logStep(`  [${slug}] wrote ${folder}/${slug}.json (holders + snapshot)`);
     }
 
     res.ok = true;
@@ -287,13 +331,15 @@ async function makesnap(args: CliArgs): Promise<any> {
     await writeProgress();
   }
 
-  // Escribe el dexscraptokens.json consolidado tras procesar todos.
+  // Escribe el dexscraptokens consolidado: un solo archivo por dia,
+  // sin LATEST suelto, sin sufijo de runts. Cada run del mismo dia
+  // sobreescribe.
   if (!args.dryRun && dexTokens.length > 0) {
     progress.phase = "writing";
-    progress.current_step = "writing dexscraptokens.json";
+    progress.current_step = "writing dexscraptokens";
     progress.current_token = null;
     await writeProgress();
-    const dexPath = path.join(args.outDir, "dexscraptokens.json");
+    const folder = dateFolder();
     const dexPayload: any = {
       ok: true,
       scraped_at:    new Date().toISOString(),
@@ -302,8 +348,10 @@ async function makesnap(args: CliArgs): Promise<any> {
       count:         dexTokens.length,
       tokens:        dexTokens,
     };
+    const dexPath = path.join(args.outDir, "dexscraptokens", folder, "all.json");
+    await mkdir(path.dirname(dexPath), { recursive: true });
     await writeFile(dexPath, JSON.stringify(dexPayload, null, 2));
-    logStep(`wrote ${dexPath}`);
+    logStep(`wrote dexscraptokens/${folder}/all.json (${dexTokens.length} tokens)`);
   }
 
   const ok = results.filter(r => r.ok).length;
@@ -331,6 +379,7 @@ async function makesnap(args: CliArgs): Promise<any> {
 
 (async () => {
   try {
+    await loadEnvLocal(process.cwd());
     const args = parseArgs(process.argv.slice(2));
     const out = await makesnap(args);
     console.log("MAKESNAP_RESULT " + JSON.stringify(out));

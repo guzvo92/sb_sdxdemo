@@ -129,13 +129,42 @@ La respuesta separa F1 y F2:
 Si F2 falla (ej. missing_helius_key), el campo `f2.ok=false` pero la
 respuesta global sigue siendo 200 OK porque F1 sí completó.
 
-### Qué escribe
+### Qué escribe (layout limpio por fecha)
+
+Cada output vive en una carpeta `YYYY_MM_DD/` con **un solo archivo por
+slug, sin sufijo**. Cada run del mismo día sobreescribe el archivo del
+slug. El front auto-detecta el folder más reciente vía `/api/snap_index`.
 
 ```
-F1 → public/demo-data/dexscraptokens.json
-F2 → public/demo-data/holders/<slug>.json    (top 100 enriquecidos)
-   → public/demo-data/snapshots/<slug>.json  (snapshot rico flat)
+public/demo-data/
+├── snapshots/<YYYY_MM_DD>/<slug>.json
+├── holders/<YYYY_MM_DD>/<slug>.json
+└── dexscraptokens/<YYYY_MM_DD>/all.json
 ```
+
+No hay `<slug>.json` sueltos en `snapshots/` o `holders/`, ni
+`dexscraptokens.json` suelto. Si querés time-series intra-día, hay que
+cambiar la lógica (hoy cada run del día sobreescribe).
+
+### Auto-detección del folder más reciente
+
+```bash
+curl http://127.0.0.1:4950/api/snap_index
+```
+
+Respuesta:
+
+```json
+{
+  "ok": true,
+  "snapshots":      { "folders": ["2026_05_12"], "latest": "2026_05_12" },
+  "holders":        { "folders": ["2026_05_12"], "latest": "2026_05_12" },
+  "dexscraptokens": { "folders": ["2026_05_12"], "latest": "2026_05_12" }
+}
+```
+
+El front de `/tracked` y de `Comp_TokenSelector` consultan este endpoint
+y construyen los paths de fetch contra `<latest>/<slug>.json`.
 
 #### F1 — dexscraptokens.json shape:
 

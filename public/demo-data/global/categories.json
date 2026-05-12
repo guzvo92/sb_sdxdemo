@@ -3,29 +3,17 @@
   "categories": [
     {
       "id": 1,
-      "name": "AI Agents",
-      "color": "#06b6d4",
+      "name": "Memes",
+      "color": "#f59e0b",
       "tokens": [
-        "axiomai",
-        "alphax",
-        "byteflow"
-      ]
-    },
-    {
-      "id": 2,
-      "name": "Memecoins",
-      "color": "#f43f5e",
-      "tokens": [
-        "novacoin",
-        "metridot"
-      ]
-    },
-    {
-      "id": 3,
-      "name": "Infrastructure",
-      "color": "#a855f7",
-      "tokens": [
-        "zorbax"
+        "buck",
+        "fartcoin",
+        "giga",
+        "popcat",
+        "retardio",
+        "weed",
+        "usduc",
+        "hanta"
       ]
     }
   ]

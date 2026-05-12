@@ -107,11 +107,12 @@ export default function SecHero() {
             </p>
           </div>
         </div>
+      </div>
 
-        {/* roller — dentro del container */}
-        <div className="hero-roller">
-          <Comp_MetricsRoller />
-        </div>
+      {/* roller — fuera del container 1280px para ocupar el ancho completo
+          del viewport (full bleed). Se separa con un poco de margen vertical. */}
+      <div className="hero-roller" style={{ width: "100%", marginTop: "32px" }}>
+        <Comp_MetricsRoller />
       </div>
 
       {/* fila 2: contenido principal */}

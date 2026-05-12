@@ -1,0 +1,802 @@
+[
+  {
+    "owner": "7QAFvj11sS5kgNh7otR3EGEZbGRHR3nMwNz31rTcDm8P",
+    "amount": 7523424.666146,
+    "percentage_of_total_supply": 0.7523586033503568,
+    "value_today": 1886945.1750557986,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "Dtd2cDkh2uKfHpcdJfwuKoFYXRRXs2YAK9P46wxXGceb",
+    "amount": 6570740.03018,
+    "percentage_of_total_supply": 0.6570880963731273,
+    "value_today": 1648002.9702810259,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "AGiAVqZiQrz32m1zKC5T4UfQKcDoGNG34sqSHSVNgwtv",
+    "amount": 3467235.80707,
+    "percentage_of_total_supply": 0.34673101746226875,
+    "value_today": 869615.124395594,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "6ixWrx57nvYcXbXvSVrNe7vYsPwRdbT25yk1tPVfodzH",
+    "amount": 2500007.726714,
+    "percentage_of_total_supply": 0.2500061348523038,
+    "value_today": 627025.2879320387,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "7p6LQRCo24aMkNHmiDahBXMFqkW3MFbny629qdR2J1A5",
+    "amount": 2127225.287928,
+    "percentage_of_total_supply": 0.21272709140542517,
+    "value_today": 533527.9704965317,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "GL8T72PKygWaYrLKtSteN9UUvYYnuC8azNDunk4eaqqQ",
+    "amount": 1793610.42,
+    "percentage_of_total_supply": 0.17936488905352713,
+    "value_today": 449854.24565732275,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "GhGn7gD2JsshG11ejsYnHZywfz5oDJiC7WBjrFST7Uiq",
+    "amount": 1703001.003011,
+    "percentage_of_total_supply": 0.17030375300959363,
+    "value_today": 427128.55758452695,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "DB2RUR2AQ4wLWDJmShJDqUSHwfQi59p63n7aWAs7w8LF",
+    "amount": 1664152.323053,
+    "percentage_of_total_supply": 0.16641880168859122,
+    "value_today": 417384.9458043897,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "22Wnk8PwyWZV7BfkZGJEKT9jGGdtvu7xY6EXeRh7zkBa",
+    "amount": 1605417.451087,
+    "percentage_of_total_supply": 0.16054518851357705,
+    "value_today": 402653.69133161276,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "4GC3a1RkRXx5shwGP8pTY6cxXgSWkbfc66vM53a6qSKj",
+    "amount": 1274778.824,
+    "percentage_of_total_supply": 0.12748061662941598,
+    "value_today": 319726.43549341615,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "CreQJ2t94QK5dsxUZGXfPJ8Nx7wA9LHr5chxjSMkbNft",
+    "amount": 1161743.479025,
+    "percentage_of_total_supply": 0.11617683968627801,
+    "value_today": 291376.1152235641,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "9rrsyYStsj5TVQ63REsJS5AFXCRV2fkjpqH8gy8WVUNb",
+    "amount": 1094738.602011,
+    "percentage_of_total_supply": 0.10947620826841341,
+    "value_today": 274570.6662429016,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "6N3HNQXq6hj5VyzHRAAsFGT6NBcsVEZPimMqnusZuRr2",
+    "amount": 1094289.43229,
+    "percentage_of_total_supply": 0.10943129033290463,
+    "value_today": 274458.01028162957,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "6DXYmRSkyjgmi2E11c1JfDqGmRfmRNikpw1YUoeEporp",
+    "amount": 1088183.695211,
+    "percentage_of_total_supply": 0.10882070352901843,
+    "value_today": 272926.63439463207,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "HfJQm2Q8wCHVGfsWxLdH3bpd6RQhabPu2ue26YGQvDAE",
+    "amount": 1023320.175955,
+    "percentage_of_total_supply": 0.10233421247987867,
+    "value_today": 256658.2579399574,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "Cb4krsYnEoGfT7hcDsZrp4wiX2UPauKA5nKwEEu3m6uJ",
+    "amount": 841700.603789,
+    "percentage_of_total_supply": 0.08417186571368201,
+    "value_today": 211106.37291392058,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "BcG2pL14bjHbP99m6oJzTcMSimXzLstRzR5ANYkLEFj6",
+    "amount": 730000,
+    "percentage_of_total_supply": 0.07300156575198465,
+    "value_today": 183090.81819999998,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "GLV3uy4rugcgd1Ukpfz4koWc18Q2eb2wUCYWCwgKRTax",
+    "amount": 655400.000003,
+    "percentage_of_total_supply": 0.06554140574530103,
+    "value_today": 164380.44143675242,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "KANdtnAjqCUtzkpLEPZPc5gc2sQwJpB3bxDFvR5Y1Gz",
+    "amount": 520639.058773,
+    "percentage_of_total_supply": 0.052065022578176114,
+    "value_today": 130581.13870907734,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "HdZv9iAqTo5EvzAPte9Vh1Cq8XMXWJJKYNGp9HXesZoJ",
+    "amount": 493131.308955,
+    "percentage_of_total_supply": 0.04931418859594615,
+    "value_today": 123681.93813233964,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "8biw57GMpNNEK7mApG6PobAKAadm2VxSkwkpayGcQKZz",
+    "amount": 473614.305017,
+    "percentage_of_total_supply": 0.04736244634079321,
+    "value_today": 118786.89125587246,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "EuWbAc5zTpRzTpxx89RhQGZnvPntyrTSQozkLs5QwyH1",
+    "amount": 414156.312208,
+    "percentage_of_total_supply": 0.041416519530481914,
+    "value_today": 103874.27132172242,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "ADqZYsW9SVZ6bCSGDqfBiPkfaZuQKGg79MA357otX8Ud",
+    "amount": 387695.189745,
+    "percentage_of_total_supply": 0.038770350528627096,
+    "value_today": 97237.57466111821,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "85sdBe4mLEK4Ks3FPggq6UXECM9bh88TXYFGGrNe7HGG",
+    "amount": 380555.431736,
+    "percentage_of_total_supply": 0.03805635941390481,
+    "value_today": 95446.85666712122,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "CYW8UnTFNWT1hXKUSWdfRnisJJA6M8QztUBu8ETYyfpM",
+    "amount": 327561,
+    "percentage_of_total_supply": 0.032756802574364176,
+    "value_today": 82155.35821974,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "DScZ4Ac5HuYRdgSqib7c3NbTESBXS4DYbSUuLiWkMkxi",
+    "amount": 303691.578687,
+    "percentage_of_total_supply": 0.030369809246360343,
+    "value_today": 76168.68441404453,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "7rhxnLV8C77o6d8oz26AgK8x8m5ePsdeRawjqvojbjnQ",
+    "amount": 260965.367672,
+    "percentage_of_total_supply": 0.026097096502874464,
+    "value_today": 65452.55162867165,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "Cpk8c9BP3D6tyy1Uk42QFPX7ppsfLY5EGnWnHtShmUsM",
+    "amount": 248673.721909,
+    "percentage_of_total_supply": 0.024867905562644673,
+    "value_today": 62369.692067339834,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "9LJFbyQxw6PAkkC8rToc8oGXPbDYP3FRD7EyK1ZwivME",
+    "amount": 215617.120171,
+    "percentage_of_total_supply": 0.021562174486872372,
+    "value_today": 54078.78760278919,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "HbS3w7WfKCR9p7Ey6MuvgB82z3KSqqXHYiB53JP9uD9M",
+    "amount": 201035.700554,
+    "percentage_of_total_supply": 0.02010400124998511,
+    "value_today": 50421.63137238638,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "CXCphDNYzNcNZUAVsY2c5tVj4T4vEXe9o22qr11M9NKm",
+    "amount": 200000.434673,
+    "percentage_of_total_supply": 0.020000472441378796,
+    "value_today": 50161.977020048245,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "fo6z1kTtYbgm6ipFowFyhRyipFu8zekJ9LBA24WSUaa",
+    "amount": 200000,
+    "percentage_of_total_supply": 0.02000042897314648,
+    "value_today": 50161.867999999995,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "DJQE1vV9KVbbortJcyhFR98AsvGDiLKNfrafn8EsyQ7C",
+    "amount": 192557.115298,
+    "percentage_of_total_supply": 0.01925612453895813,
+    "value_today": 48295.12300019528,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "D4hYi4imTSyk2yZDo2HFnffjivonFVhAe24LttpzN9jK",
+    "amount": 192121.569015,
+    "percentage_of_total_supply": 0.019212568976469835,
+    "value_today": 48185.883924416594,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "G3ZN773XPd86eTBAFKYuLR2UisCQQ3gaiE6ZBVu1enX7",
+    "amount": 188668.404158,
+    "percentage_of_total_supply": 0.018867245084194864,
+    "value_today": 47319.79792572123,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "9RMGcPLxzTZGv2p4eugehSkEUP5W4NxJr7WX8RxFNwAV",
+    "amount": 180000,
+    "percentage_of_total_supply": 0.018000386075831834,
+    "value_today": 45145.6812,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "664NX9inNEJAR2f4g3quwfwWV4zowBhDAMz56VM6sFDE",
+    "amount": 165265.014076,
+    "percentage_of_total_supply": 0.016526855878865456,
+    "value_today": 41450.00910549227,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "DqpwoiyE9PQK4YGgBjpx8oPW6UxPGuLc5YG6Wjy2rx74",
+    "amount": 164813.950692,
+    "percentage_of_total_supply": 0.016481748572995062,
+    "value_today": 41336.87819585307,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "BabjUjkeqPT5CYXYWDFH7iwKFUpfxvg8ayvjNqFANzob",
+    "amount": 160109.792828,
+    "percentage_of_total_supply": 0.01601132269680806,
+    "value_today": 40157.031466727414,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "7fh1VnjHUHyzGMQxjJB56pmd1jMYTGEY2CqBzFTKwt1t",
+    "amount": 159578.566267,
+    "percentage_of_total_supply": 0.01595819890129841,
+    "value_today": 40023.79488357253,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "GYMPj3Rouk35q1ox6xs7oenhHp6h5szaAHsrhwfeL8sy",
+    "amount": 154936.069696,
+    "percentage_of_total_supply": 0.015493939286666602,
+    "value_today": 38859.413382647755,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "ABUB6HBzHuknR1szrJJ6ExgMJuw2Y5VHXGuVNWyfsGiL",
+    "amount": 150574.751012,
+    "percentage_of_total_supply": 0.01505779806382361,
+    "value_today": 37765.55392198405,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "4BCaPo3ud1DAKhywZnXAistSQYpoCGu5ukMJLWjCNFG4",
+    "amount": 145168.28261,
+    "percentage_of_total_supply": 0.014517139627474803,
+    "value_today": 36409.561150347574,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "924CNKmpAjj6Effw3h8aDLLdDmxwrjbM7BjTZ5cNMxbM",
+    "amount": 145127.178376,
+    "percentage_of_total_supply": 0.014513029115911739,
+    "value_today": 36399.25182454683,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "FNxRd6JsXd98Z8BGkKo4ieUwZsg4LbjCTc18Bmn9GTqu",
+    "amount": 140839.04965,
+    "percentage_of_total_supply": 0.01408420704585138,
+    "value_today": 35323.74908894373,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "3vhLAhrNd2qw3MQjNW7tvu8pJLkP37RCEPWV6Lte87pX",
+    "amount": 140315.558874,
+    "percentage_of_total_supply": 0.01403185684543395,
+    "value_today": 35192.45271291908,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "nUXgZpPAPCPbibNXkFx77NaXfAzWMScQj8hFyGJPYcs",
+    "amount": 135582.526075,
+    "percentage_of_total_supply": 0.01355854341381409,
+    "value_today": 34005.363880403536,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "3qRJoDbc37KxPR6USfVKoGmV93ChiRaRhqNPA17r1YtB",
+    "amount": 119389.988966,
+    "percentage_of_total_supply": 0.011939254972096126,
+    "value_today": 29944.12433516974,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "5WW5PzafdRyzctWXHcLsSc5prZ9HkNHQunFfnits1brj",
+    "amount": 119255.172398,
+    "percentage_of_total_supply": 0.011925773026132687,
+    "value_today": 29910.311080728596,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "ATWV3XhYpQfKXJuFjMqmNC3Vb8v2bMQbbBB2Smr72e5n",
+    "amount": 110104.382446,
+    "percentage_of_total_supply": 0.011010674403716897,
+    "value_today": 27615.207492388847,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "F6kVWZ2kmurqWZf7NuRinUUZJnC34CWRFz3cdWkr7a4T",
+    "amount": 109301.233705,
+    "percentage_of_total_supply": 0.010930357806970685,
+    "value_today": 27413.770286736806,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "4VxybG8zPsYH6i3oD3cv2qtHoRkCyQ1YV2cyXueZFfRQ",
+    "amount": 108152.975737,
+    "percentage_of_total_supply": 0.010815529547311516,
+    "value_today": 27125.77646363298,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "GK72R4K6BncDEvGFy246Q4Trnqg22XHYoQqPHykCknTa",
+    "amount": 107627.536899,
+    "percentage_of_total_supply": 0.010762984536515759,
+    "value_today": 26993.991495463837,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "FpcQQNbgwKxhSHfJRgiZa567JbQU4JBNC1C2vTosLsYt",
+    "amount": 106791.078559,
+    "percentage_of_total_supply": 0.010679336908424928,
+    "value_today": 26784.19993127094,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "5dbuRLrnzEz6MGp7tCRckwfvvJ4tgfvwjMvqtp4vdx4W",
+    "amount": 105060.71785,
+    "percentage_of_total_supply": 0.010506297126133539,
+    "value_today": 26350.20930388472,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "5DcLRiRonmSG7Wu34VgwCeJiC2m2tZVmerEfeUGnwLhZ",
+    "amount": 103640.325286,
+    "percentage_of_total_supply": 0.010364254823182203,
+    "value_today": 25993.961582366974,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "7ejtW3PE4MJ5wmNBkGE3rzDTEVipoVpNb2fLvbCD5PVB",
+    "amount": 99905.950826,
+    "percentage_of_total_supply": 0.00999080936745039,
+    "value_today": 25057.345588741515,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "8Qjn5UtkS4XGeHLoy15gR6eKDxWFu231Tr4yxaFKuvom",
+    "amount": 99447.905157,
+    "percentage_of_total_supply": 0.009945003818103931,
+    "value_today": 24942.463456809764,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "DUkQZETsed1WGp1JadUzFXRHuGW9cPwgztLS5xegkpde",
+    "amount": 98333.888399,
+    "percentage_of_total_supply": 0.009833599752887561,
+    "value_today": 24663.057648986847,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "B6MKiLJLfh3jFubc8ZNiA1h1wSyinfWAKD1wFXnVTGRe",
+    "amount": 94445.722032,
+    "percentage_of_total_supply": 0.009444774776592758,
+    "value_today": 23687.86920866938,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "GpMZbSM2GgvTKHJirzeGfMFoaZ8UR2X7F4v8vHTvxFbL",
+    "amount": 92875.02168800001,
+    "percentage_of_total_supply": 0.009287701373251417,
+    "value_today": 23293.922892052968,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "2TDGxx837xeNu8t5XZbcSBevQXvcnzQiGPBV3odkSswg",
+    "amount": 92510.045583,
+    "percentage_of_total_supply": 0.009251202979926675,
+    "value_today": 23202.383476042145,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "GjH773cvoh16MPeH9xXRiMGjMxakt6MF63MATp9EcDh3",
+    "amount": 90000.000001,
+    "percentage_of_total_supply": 0.009000193038015919,
+    "value_today": 22572.840600250805,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "8uQhyHbH8XkZR3KfZXkpsbSZz8q4CLgAf5dVeDNiKUtA",
+    "amount": 88887.593169,
+    "percentage_of_total_supply": 0.008888949968852625,
+    "value_today": 22293.838576905397,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "H19Kbm7Z75kHjDtt81EV8HNHFbZRaXVJYYNb84GD1WHW",
+    "amount": 86341.243448,
+    "percentage_of_total_supply": 0.008634309535174365,
+    "value_today": 21655.190283972202,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "EmNqeGNCUVhAQxsGT9hPUFUcnsdgMtKE34DAVmTRJcxv",
+    "amount": 83299.883706,
+    "percentage_of_total_supply": 0.008330167037666075,
+    "value_today": 20892.388854378612,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "32FYQzB3yXBNnfpJHtsW8E8JT5ogvwC6Rg6LrAFhQ8ek",
+    "amount": 80817.176497,
+    "percentage_of_total_supply": 0.008081890991692457,
+    "value_today": 20269.70269787608,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "5icMGuZq2RKinwBBMMQ6c9eR48YHMLhHAAzg7bS45Maa",
+    "amount": 78221.135646,
+    "percentage_of_total_supply": 0.007822281338433396,
+    "value_today": 19618.591405423733,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "DGFW1Effv88XzXkgfgyoFfmefzEU5Pp9zWJACBmCSh8K",
+    "amount": 76742.97243,
+    "percentage_of_total_supply": 0.0076744618463717666,
+    "value_today": 19247.854264806494,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "6Lwta22Vv4EqYpSgYqr3FaG7ne54LWjcXn7CFTKvtN78",
+    "amount": 76290.678844,
+    "percentage_of_total_supply": 0.007629231517662753,
+    "value_today": 19134.4148090156,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "FZTjgDEh8brYkWNMEAgNsBeGGDPVRjinFJr3CGsKtyKq",
+    "amount": 74055.896736,
+    "percentage_of_total_supply": 0.007405748513555192,
+    "value_today": 18573.910583464312,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "5SYyDNKS9ZkZ3CnH6VX3x3u8xDHeJU3QVoFHT2EjLwMZ",
+    "amount": 73939.809932,
+    "percentage_of_total_supply": 0.007394139584164584,
+    "value_today": 18544.794928770367,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "7CpE8pXGiPxtY35EZ5igzcoAF5ZeQwNdKFPGDrT3zcQJ",
+    "amount": 73251.151095,
+    "percentage_of_total_supply": 0.007325272223383842,
+    "value_today": 18372.072860377226,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "3TBu9vkxTKPGA7sygcnMJztpRzPRa4ZGc8g432wVZGVC",
+    "amount": 71184.199129,
+    "percentage_of_total_supply": 0.0071185725934494,
+    "value_today": 17853.662001973065,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "G9NfXwJCRM4dkmARX4xLbTiFJyLq6RppoL8KwA1YSEz6",
+    "amount": 70506.945992,
+    "percentage_of_total_supply": 0.007050845827132354,
+    "value_today": 17683.800589669165,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "9gJPYU5zn934MN6yABTQTBEJ4tY7HbS4fS46L43GCVE",
+    "amount": 67471.794119,
+    "percentage_of_total_supply": 0.00674732412983911,
+    "value_today": 16922.55615160227,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "AqzNvr7uukfBpAagk1jYosZzGWGrmwDLCAtQqy89YXs9",
+    "amount": 66877.234436,
+    "percentage_of_total_supply": 0.006687866886288419,
+    "value_today": 16773.43502991843,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "HVRcXaCFyUFG7iZLm3T1Qn8ZGDMHj3P3BpezUfWfRf2x",
+    "amount": 65743.044002,
+    "percentage_of_total_supply": 0.006574445410202224,
+    "value_today": 16488.969475732578,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "7RmkMNQerKaVioRnmqZsHM5Gm8F3gngQG8umLNoK97q4",
+    "amount": 64863.136254,
+    "percentage_of_total_supply": 0.006486452748118246,
+    "value_today": 16268.280394195812,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "ENWaZ3CmoQSQqxVCuZdbC1v6z2ChcgmNGndQmDEGtEXE",
+    "amount": 63301.60378,
+    "percentage_of_total_supply": 0.006330296151440753,
+    "value_today": 15876.633465003304,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "2ZCaPxcbgETAN3kfcJibzxbfAkF5uRdFs5EFdxZvK6Kb",
+    "amount": 63023.737125,
+    "percentage_of_total_supply": 0.006302508889954087,
+    "value_today": 15806.941912654747,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "DUKX31qjnYs7Vp8HAeDkeZyNsDjjMhuRyyyb69y1t3bT",
+    "amount": 61878.961059,
+    "percentage_of_total_supply": 0.006188028827963132,
+    "value_today": 15519.821383093491,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "6bZhw5q3uXb25WqFjhh4uecP9FTFYXGhoKu5YHkxCaa3",
+    "amount": 61219.247515,
+    "percentage_of_total_supply": 0.006122056058566159,
+    "value_today": 15354.35906453379,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "7wkFP7EHYTgeUG5ouX64ftTsMuXpR1gFCJK6knyp22Rd",
+    "amount": 61147.524556,
+    "percentage_of_total_supply": 0.006114883608830041,
+    "value_today": 15336.370276524152,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "6UWsi9WKQbE5jLxLcycfr5NZ1DQGVNKUCkW1pzUaRVCE",
+    "amount": 60826.2396,
+    "percentage_of_total_supply": 0.006082754424116949,
+    "value_today": 15255.789008757863,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "FeCWNixmmPZLNnKHDy1J3copSJZSo4ZDMTdHfG4Tyf4x",
+    "amount": 56970.139452,
+    "percentage_of_total_supply": 0.005697136138499881,
+    "value_today": 14288.643075664082,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "7kRJ8nRLYqNUzm9vpkHyxHLfSWVsvsEayVJdrZ4YZTcH",
+    "amount": 56580.622323,
+    "percentage_of_total_supply": 0.005658183590137939,
+    "value_today": 14190.948541620897,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "8aWYfSs1bL1QcWMdHHyFUkqnZsDtMJdxson2tM8VAdPe",
+    "amount": 55628.782551,
+    "percentage_of_total_supply": 0.005562997571369428,
+    "value_today": 13952.218236619825,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "CbDkXnt3uLpVTY8MhShGcJNvHgFZcHNfAH3EEBRxsLdB",
+    "amount": 55110.198783,
+    "percentage_of_total_supply": 0.005511138082276875,
+    "value_today": 13822.152584033032,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "8Dn4b4RCy8s6L3fKEJrLm8pZDJraeJsRxiDJThp9BczR",
+    "amount": 53957.22724,
+    "percentage_of_total_supply": 0.0053958384550077225,
+    "value_today": 13532.976552294422,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "F4n1VFrUbDKSCSn5dTdRBFeQmrfgvig2FUKVpekT6p9W",
+    "amount": 53218.723055,
+    "percentage_of_total_supply": 0.0053219864525154035,
+    "value_today": 13347.752805067334,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "6uGmcrXxJ44bJJencLqctnEah3bwjzrbWM7JqMbtV15K",
+    "amount": 52420.119212,
+    "percentage_of_total_supply": 0.0052421243553173865,
+    "value_today": 13147.45550228304,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "BMefSLR2seB9FSMbXbbFcjR1V7z2SSQVULcjS6f29owF",
+    "amount": 52289.643575,
+    "percentage_of_total_supply": 0.005229076511764664,
+    "value_today": 13114.73099388099,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "zFDrwd4utjs7PQSYThXdCHx3J1HufcVC16bwjDbp6EP",
+    "amount": 51051.911997,
+    "percentage_of_total_supply": 0.0051053006991966165,
+    "value_today": 12804.296353705653,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "9epQs3jbXb1PnGwsiPFGuB2pCJbPFxLD2hFujiYiPrW6",
+    "amount": 50936.601717,
+    "percentage_of_total_supply": 0.005093769423871548,
+    "value_today": 12775.375458483635,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "3igUUH6yT9MZrnkK4DJ8Aj91P519d47pSkA9BuK4qCFK",
+    "amount": 48437.364855,
+    "percentage_of_total_supply": 0.0048438403771440455,
+    "value_today": 12148.543510621745,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "CqXi1Y91vj63VMC6M6ShdXLRnFSvrGiwmfajsR9Ft4kr",
+    "amount": 47622.701166,
+    "percentage_of_total_supply": 0.004762372260899816,
+    "value_today": 11944.21824846169,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "485fd6paWP7BpXJ7LMuCoEZHrbGjEYPwPNonupibmwX2",
+    "amount": 47538.633703,
+    "percentage_of_total_supply": 0.004753965334286394,
+    "value_today": 11923.133343551186,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "9WeN2UgGUgd293WuVwAefZtF96uSXxbMjWcqgqW7tLFh",
+    "amount": 46695.71282,
+    "percentage_of_total_supply": 0.0046696714380342775,
+    "value_today": 11711.720913213738,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  },
+  {
+    "owner": "6gMxz34BRTjQLxWFovEAuRgTha1afBE2otZjPo78D1B3",
+    "amount": 46308.499248,
+    "percentage_of_total_supply": 0.004630949250313156,
+    "value_today": 11614.604132781376,
+    "has_mainpool": false,
+    "lookas_mainpool": false
+  }
+]

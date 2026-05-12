@@ -91,25 +91,42 @@ export default function Page() {
     } catch {}
   }, []);
 
+  // Indice de carpetas de fecha · se carga al signar y se usa para construir
+  // los paths de fetch de snapshots/holders del folder mas reciente.
+  // Layout: snapshots/<YYYY_MM_DD>/<slug>.json (sin sufijo, sin LATEST suelto).
+  const [snapIdx, setSnapIdx] = useState<{ snapshots: string | null; holders: string | null } | null>(null);
+
   useEffect(() => {
     if (!signed) return;
-    fetch("/demo-data/tokens.json").then(r => r.json()).then((d: TokenMeta[]) => {
+    Promise.all([
+      fetch("/demo-data/tokens.json").then(r => r.json()),
+      fetch("/api/snap_index").then(r => r.json()),
+    ]).then(([d, idx]: [TokenMeta[], any]) => {
       setTokens(d);
       if (d.length > 0) setActiveSlug(d[0].slug);
+      setSnapIdx({
+        snapshots: idx?.snapshots?.latest ?? null,
+        holders:   idx?.holders?.latest ?? null,
+      });
     }).catch(() => {});
   }, [signed]);
 
   useEffect(() => {
-    if (!activeSlug) return;
+    if (!activeSlug || !snapIdx) return;
+    if (!snapIdx.snapshots || !snapIdx.holders) {
+      // sin folder de fecha disponible — UI muestra empty
+      setSnap(null); setHolders([]);
+      return;
+    }
     setLoadingDetail(true);
     Promise.all([
-      fetch(`/demo-data/snapshots/${activeSlug}.json`).then(r => r.json()),
-      fetch(`/demo-data/holders/${activeSlug}.json`).then(r => r.json()),
+      fetch(`/demo-data/snapshots/${snapIdx.snapshots}/${activeSlug}.json`).then(r => r.json()),
+      fetch(`/demo-data/holders/${snapIdx.holders}/${activeSlug}.json`).then(r => r.json()),
     ]).then(([s, h]) => {
       setSnap(s);
       setHolders((h as Holder[]).slice(0, 100));
     }).catch(() => {}).finally(() => setLoadingDetail(false));
-  }, [activeSlug]);
+  }, [activeSlug, snapIdx]);
 
   const handleSign = async () => {
     if (!signMessage) return;
