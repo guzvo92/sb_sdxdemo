@@ -148,22 +148,49 @@ export class Sdkrout_back {
       }
 
       // dex_main_pool_found + dex_full_info.pools_high desde raw_pairs.
+      // Mapea cada pair de DexScreener al shape plano que la tabla
+      // Top Pools (High) consume en sec_datatext_hackathon.
       const pairs: any[] = Array.isArray(dexTok.raw_pairs) ? dexTok.raw_pairs : [];
-      if (pairs.length > 0) {
-        const main = pairs[0];
-        const fmt = (n: any) => Number(n || 0).toLocaleString(undefined, { maximumFractionDigits: 2 });
-        enriched.dex_main_pool_found = {
-          dexId:               main?.dexId ?? "",
-          pool_address:        main?.pairAddress ?? "",
-          liq_usd:             fmt(main?.liquidity?.usd),
-          liq_base:            fmt(main?.liquidity?.base),
-          liq_quote:           fmt(main?.liquidity?.quote),
-          quotetoken_symbol:   main?.quoteToken?.symbol ?? "",
-          createdAt_formatted: main?.pairCreatedAt
-            ? new Date(main.pairCreatedAt).toISOString().slice(0, 10)
-            : "",
+      const fmt = (n: any) => Number(n || 0).toLocaleString(undefined, { maximumFractionDigits: 2 });
+      const fmtDate = (ms: any) => ms ? new Date(ms).toISOString().slice(0, 10) : "";
+      const flattenPool = (p: any, idx: number) => {
+        const liqUsdRaw   = Number(p?.liquidity?.usd   || 0);
+        const liqBaseRaw  = Number(p?.liquidity?.base  || 0);
+        const liqQuoteRaw = Number(p?.liquidity?.quote || 0);
+        const priceBase   = Number(p?.priceUsd || 0);
+        // Valor USD del lado base = cantidad de base tokens * precio USD.
+        const calcBase  = liqBaseRaw > 0 && priceBase > 0 ? liqBaseRaw * priceBase : 0;
+        // Valor USD del lado quote = diferencia entre liq total y base.
+        const calcQuote = liqUsdRaw > 0 ? Math.max(0, liqUsdRaw - calcBase) : 0;
+        return {
+          idx:                 idx + 1,
+          dexId:               p?.dexId ?? "",
+          pool_address:        p?.pairAddress ?? "",
+          liq_usd:             fmt(liqUsdRaw),
+          liq_base:            fmt(liqBaseRaw),
+          liq_quote:           fmt(liqQuoteRaw),
+          calc_base_value:     fmt(calcBase),
+          calc_quote_value:    fmt(calcQuote),
+          quotetoken_symbol:   p?.quoteToken?.symbol ?? "",
+          createdAt_formatted: fmtDate(p?.pairCreatedAt),
+          _liq_usd_raw:        liqUsdRaw,
         };
-        enriched.dex_full_info = { pools_high: pairs.slice(0, 20) };
+      };
+
+      if (pairs.length > 0) {
+        // Mayor liquidez primero (DexScreener ya los entrega ordenados,
+        // pero re-ordenamos por las dudas).
+        const sorted = [...pairs].sort(
+          (a, b) => Number(b?.liquidity?.usd || 0) - Number(a?.liquidity?.usd || 0),
+        );
+        const mainFlat = flattenPool(sorted[0], 0);
+        enriched.dex_main_pool_found = mainFlat;
+        // Pools con liquidez >$5,000 USD (umbral que muestra el header).
+        const high = sorted
+          .map((p, i) => flattenPool(p, i))
+          .filter(p => p._liq_usd_raw > 5000)
+          .slice(0, 20);
+        enriched.dex_full_info = { pools_high: high };
       } else {
         enriched.dex_main_pool_found = null;
         enriched.dex_full_info = { pools_high: [] };

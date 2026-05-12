@@ -1,7 +1,7 @@
 # summary.md — SatellDex Demo
-# version: 2.7 (12-may-26 02:54)
-# tokens: ~8700
-# lineas: 719
+# version: 2.8 (12-may-26 08:55)
+# tokens: ~9400
+# lineas: 732
 
 > Concept proof of **on-chain Solana holder intelligence** with community-
 > driven token tracking. Built for the Colosseum Solana Frontier Hackathon
@@ -146,8 +146,15 @@ sb_satelldexdemo/
 │   │                              dex_price/name/dex_supply_raw +
 │   │                              indx_supplyfound/amount_lost/perc_lost +
 │   │                              dex_main_pool_found + dex_full_info.pools_high.
-│   │                              Reemplaza el SDK del backend prod en
-│   │                              hackathonview + globalhackathon
+│   │                              Las pools (main + high) se aplanan con
+│   │                              flattenPool: idx, dexId, pool_address,
+│   │                              liq_usd/base/quote, calc_base_value,
+│   │                              calc_quote_value, quotetoken_symbol,
+│   │                              createdAt_formatted. pools_high filtra por
+│   │                              liq_usd > $5k y limita a 20 (orden desc
+│   │                              por liquidez). Reemplaza el SDK del
+│   │                              backend prod en hackathonview +
+│   │                              globalhackathon
 │   ├── layout/
 │   │   └── navbarhome.tsx      ← navbar fijo de la landing · drawer mobile
 │   │                              custom (sin Bootstrap) · admin badge via
@@ -317,7 +324,11 @@ declaran su propio `"use client"`.
 Ruta                     | Mensaje firmado                              | Contenido
 -------------------------|----------------------------------------------|----------------------------------
 /                        | (sin firma)                                  | Landing marketing (hero, plans, ...)
-/global                  | satelldex-demo:view-global                   | Global VIP Dashboard (3 HUD tabs)
+/global                  | satelldex-demo:view-global                   | Global VIP Dashboard (3 HUD tabs).
+                         |                                              | Sin entrada en el navbar (item
+                         |                                              | "GLOBAL" del nav apunta a
+                         |                                              | /globalhackathon). Accesible solo
+                         |                                              | por URL directa.
 /requiretoken            | satelldex-demo:require-token:<ts>:<addr>     | Form CRUD para community requests
 /api/community_request   | (GET) sin firma · (POST) requiere firma      | Lista + append de community requests
 /api/regenerate          | (GET) sin firma · (POST) requiere admin      | GET ultimo scrape · POST dispara
@@ -479,8 +490,10 @@ SecCommunityReq              | Fetch a Next.js Route Handler
 Navbarx_home                 | Sin /api/wallet_status (admin solo via
                              | admins.json). Mobile drawer custom (state
                              | React) en lugar de Bootstrap offcanvas.
-                             | Items reducidos: WHAT IS, DASHBOARD, GLOBAL,
-                             | HACKATHON.
+                             | Items: WHAT IS (/), GLOBAL (/globalhackathon),
+                             | HACKATHON (/hackathonview). /global queda sin
+                             | entrada en el nav — la ruta sigue existiendo
+                             | pero no se enlaza desde la landing.
 ```
 
 ---
