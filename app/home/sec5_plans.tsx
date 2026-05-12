@@ -207,7 +207,7 @@ export default function SecPlans() {
             </ul>
 
             <a
-              href="/global"
+              href="/globalhackathon"
               style={{
                 display: "block",
                 textAlign: "center",

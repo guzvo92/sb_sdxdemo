@@ -1,7 +1,7 @@
 # summary.md — SatellDex Demo
-# version: 2.8 (12-may-26 08:55)
-# tokens: ~9400
-# lineas: 732
+# version: 3.0 (12-may-26 09:18)
+# tokens: ~8818
+# lineas: 687
 
 > Concept proof of **on-chain Solana holder intelligence** with community-
 > driven token tracking. Built for the Colosseum Solana Frontier Hackathon
@@ -44,7 +44,7 @@ Distribution         | Pool · Top 1–10 · 11–20 · 21–50 · 51–100     
 Account              | Wallets bucketed by USD value, etiquetadas      | Distinguish bot dust
 Distribution         | con marine tiers:                              | from real holders.
                      |   🐋 WHALE     +$50k                            | Las marine tiers
-                     |   🦈 SHARK     $10k–50k                         | aparecen en /global
+                     |   🦈 SHARK     $10k–50k                         | aparecen en /globalhackathon
                      |   🐬 DOLPHIN   $5k–10k                          | como label de cada
                      |   🐟 FISH      $1k–5k                           | serie en los bar charts
                      |   🦀 CRAB      $500–1k                          | (counts y % share).
@@ -90,12 +90,13 @@ Front    | Next.js 16 (App Router) · React 19 · TypeScript · Tailwind 4
 Wallet   | @solana/wallet-adapter-react / -ui / -base / -wallets
 Adapters | @solana/wallet-adapter-phantom · -solflare (desktop explicitos)
          | @solana-mobile/wallet-adapter-mobile (MWA · deeplink en mobile)
-Charts   | Chart.js via CDN (sin npm dep), solo en /global
+Charts   | Chart.js via CDN (sin npm dep), en /hackathonview + /globalhackathon
 RPC      | NEXT_PUBLIC_SOLANA_RPC env (default: api.mainnet-beta.solana.com)
 Data     | Static JSON files served from public/ (tokens, snapshots,
          | holders, global). No database.
 Persist  | localStorage for vote counters. Auth no persiste — refresh = re-firmar.
-Render   | 2 routes client-side ("use client"): / y /global. Root layout
+Render   | Routes client-side ("use client"): /, /hackathonview,
+         | /globalhackathon, /requiretoken. Root layout
          | es server component; AppWalletProvider aislado en componente
          | cliente bajo app/components/. No API.
 ```
@@ -162,8 +163,13 @@ sb_satelldexdemo/
 │   ├── home/                   ← componentes del hero (clonados del prod)
 │   │   ├── a11animator.tsx     ← Comp_TextAnimation (terminal estilo retro)
 │   │   ├── a11animator.css     ← estilos del animator + responsive hero
-│   │   ├── comp_metricsroller.tsx ← roller infinito · computa metrics desde
-│   │   │                            tokens.json + global_history.json local
+│   │   ├── comp_metricsroller.tsx ← roller infinito · computa metrics
+│   │   │                            de las fuentes reales que REGEN
+│   │   │                            actualiza: targets.json (ntokens),
+│   │   │                            /api/snap_index (nsnapshots + ndays),
+│   │   │                            snapshots/<latest>/*.json (nwallets),
+│   │   │                            dexscraptokens/<latest>/all.json
+│   │   │                            (npools)
 │   │   ├── comp_tokenselector.tsx ← Comp_TokenSelector + VipCard +
 │   │   │                            VipInterestButton · lee targets.json
 │   │   │                            (lista canonica de slugs) + dexscraptokens.json
@@ -175,7 +181,7 @@ sb_satelldexdemo/
 │   │   ├── sec3_hexnode.tsx    ← node card con scan line · imagen
 │   │   │                          /assets/Node.png
 │   │   ├── sec4_pillars.tsx    ← HOLDER SCAN / LIQMAP / TIME SERIES
-│   │   ├── sec5_plans.tsx      ← cards FREE (→ /hackathonview) + ALPHA (→ /global)
+│   │   ├── sec5_plans.tsx      ← cards FREE (→ /hackathonview) + ALPHA (→ /globalhackathon)
 │   │   └── sec6_communityreq.tsx ← tabla de requests · fetch
 │   │                              /api/community_request
 │   ├── tracked/
@@ -192,9 +198,10 @@ sb_satelldexdemo/
 │   │   │   └── route.ts        ← POST (admin) fire-and-forget · spawn
 │   │   │                          tsx makesnap.ts + responde inmediato
 │   │   ├── snap_index/
-│   │   │   └── route.ts        ← GET lista carpetas YYYY_MM_DD en
-│   │   │                          snapshots/holders/dexscraptokens y
-│   │   │                          devuelve latest de cada uno
+│   │   │   └── route.ts        ← GET lista carpetas YYYY_MM_DD__HH_MM
+│   │   │                          (o YYYY_MM_DD legacy) en snapshots/
+│   │   │                          holders/dexscraptokens y devuelve
+│   │   │                          latest de cada uno
 │   │   └── snap_progress/
 │   │       └── route.ts        ← GET estado actual del snapshot
 │   │                              (poleado cada 1s por el navbar)
@@ -219,16 +226,6 @@ sb_satelldexdemo/
 │   │   ├── sec_yestmul_nwallsper_h.tsx   ← wallets USD bucket %
 │   │   └── sec_token_nwallsclust_h.tsx   ← line chart por token, evolucion
 │   │                                       de brackets habilitados
-│   └── global/                 ← Global VIP dashboard route
-│       ├── page.tsx                  ← sign gate + 3 HUD tabs
-│       ├── sec_yestmul_liqclust.tsx  ← bar chart: % liquidity clusters
-│       ├── sec_yestmul_nwalls.tsx    ← bar chart: wallets by USD bucket (counts)
-│       │                                + marine-tier labels (🐋🦈🐬🐟🦀🦐🦠)
-│       ├── sec_yestmul_nwallsper.tsx ← bar chart: wallets by USD bucket (%)
-│       │                                + marine-tier labels
-│       ├── sec_token_nwallsclust.tsx ← line chart por token: evolucion
-│       │                                temporal de brackets habilitados
-│       └── chartjs.d.ts              ← window.Chart type declaration
 ├── public/
 │   ├── admins.json             ← lista de pubkeys admin (root, fetch /admins.json)
 │   ├── targets.json            ← lista de CAs editable a mano (input REGEN)
@@ -239,11 +236,11 @@ sb_satelldexdemo/
 │   │   ├── cmdsmall.png        ← background del animator mobile
 │   │   └── cmdsmall2.png       ← alias usado por a11animator.css
 │   └── demo-data/
-│       ├── tokens.json                  ← 6 tracked tokens metadata (legacy)
-│       ├── snapshots/<slug>.json        ← per-token aggregated metrics (dummy)
-│       ├── holders/<slug>.json          ← per-token top 200 holders (dummy)
+│       ├── snapshots/<YYYY_MM_DD__HH_MM>/<slug>.json  ← per-token rich (REGEN F2)
+│       ├── holders/<YYYY_MM_DD__HH_MM>/<slug>.json    ← top 100 holders (REGEN F2)
+│       ├── dexscraptokens/<YYYY_MM_DD__HH_MM>/all.json ← scrape DexScreener (REGEN F1)
 │       ├── community_requests.json      ← source of truth del CRUD
-│       ├── dexscraptokens.json          ← output del scrape DexScreener (REGEN)
+│       ├── snap_progress.json           ← estado vivo del scrape en curso
 │       └── global/
 │           ├── global_history.json      ← 1 snapshot per token (no time-series)
 │           └── categories.json          ← una sola categoria "Memes" con
@@ -254,7 +251,6 @@ sb_satelldexdemo/
 │                                 snapshot rico por CA). Disparado por
 │                                 /api/regenerate F2 via child_process.spawn,
 │                                 o manual: npx tsx makesnap.ts
-├── gen_global_dummy.py         ← generador de global_history.json (N_SNAPS=1)
 ├── package.json
 ├── tsconfig.json
 ├── next.config.ts
@@ -313,7 +309,8 @@ guarda walletName previo en localStorage. No dispara modal ni deeplink
 en first-time visits.
 
 El root `layout.tsx` se mantiene como **server component** (sin
-`"use client"`); solo el provider es cliente. Las pages (`/`, `/global`)
+`"use client"`); solo el provider es cliente. Las pages
+(`/`, `/hackathonview`, `/globalhackathon`, `/requiretoken`)
 declaran su propio `"use client"`.
 
 ---
@@ -324,11 +321,6 @@ declaran su propio `"use client"`.
 Ruta                     | Mensaje firmado                              | Contenido
 -------------------------|----------------------------------------------|----------------------------------
 /                        | (sin firma)                                  | Landing marketing (hero, plans, ...)
-/global                  | satelldex-demo:view-global                   | Global VIP Dashboard (3 HUD tabs).
-                         |                                              | Sin entrada en el navbar (item
-                         |                                              | "GLOBAL" del nav apunta a
-                         |                                              | /globalhackathon). Accesible solo
-                         |                                              | por URL directa.
 /requiretoken            | satelldex-demo:require-token:<ts>:<addr>     | Form CRUD para community requests
 /api/community_request   | (GET) sin firma · (POST) requiere firma      | Lista + append de community requests
 /api/regenerate          | (GET) sin firma · (POST) requiere admin      | GET ultimo scrape · POST dispara
@@ -338,7 +330,8 @@ Ruta                     | Mensaje firmado                              | Conten
 /api/snap_progress       | sin firma · lectura publica                  | Estado actual del snapshot en
                          |                                              |     curso (poleado cada 1s por
                          |                                              |     el navbar)
-/api/snap_index          | sin firma · lectura publica                  | Lista carpetas YYYY_MM_DD en
+/api/snap_index          | sin firma · lectura publica                  | Lista carpetas YYYY_MM_DD__HH_MM
+                         |                                              |     (o YYYY_MM_DD legacy) en
                          |                                              |     snapshots/ + holders/ +
                          |                                              |     dexscraptokens/ y devuelve
                          |                                              |     el latest de cada uno
@@ -351,52 +344,10 @@ Ruta                     | Mensaje firmado                              | Conten
                          |                                              |     sign por tab
 ```
 
-Las rutas con sign gate (/global, /hackathonview, /globalhackathon) re-piden firma en cada refresh
+Las rutas con sign gate (/hackathonview, /globalhackathon) re-piden firma en cada refresh
 (sin cookies ni localStorage). La landing / y el form /requiretoken son
 publicos; el POST de /api/community_request valida ed25519 + anti-replay
 de 300s.
-
----
-
-## Global VIP Section (/global)
-
-Vista multi-token simplificada. 3 HUD tabs:
-
-```
-Tab           | Contenido
---------------|----------------------------------------------------------
-TOKENS        | Lista de los 8 memes (buck/fartcoin/giga/popcat/retardio/
-              | weed/usduc/hanta) con su categoria unica "Memes" +
-              | holders count + bigpool %
-              |
-LAST SNAPSHOT | 3 bar charts comparativos multi-token del snapshot
-              | único actual:
-              |   1) Liquidity Clusters % (6 metrics per token)
-              |   2) Wallets by USD bucket — counts (9 metrics)
-              |      labels: 🐋 WHALE / 🦈 SHARK / 🐬 DOLPHIN /
-              |              🐟 FISH / 🦀 CRAB / 🦐 SHRIMP /
-              |              🦠 PLANKTON / 🐠 +FISH
-              |   3) Wallets by USD bucket — % share (7 metrics)
-              |      mismos marine-tier labels que (2)
-              | Cada chart con selector de categoría (ALL / AI / Meme / Infra)
-              |
-CLUSTERS BY   | 1 line chart por token (6 charts en grid responsive,
-TOKEN         | minmax(420px,1fr)). Cada chart muestra evolución temporal
-              | de los brackets habilitados de Account Distribution:
-              |   🐠 +FISH    +$100
-              |   🐋 WHALE    +$50k
-              |   🦈 SHARK    $10k–50k
-              |   🐬 DOLPHIN  $5k–10k
-              |   🐟 FISH     $1k–5k
-              |   🦀 CRAB     $500–1k
-              |   🦐 SHRIMP   $100–500
-              | Brackets FULL y PLANKTON existen en BRACKET_META pero
-              | quedan deshabilitados (enabled=false) para no aplastar
-              | la escala con la masa de holders <$100 / total.
-              | Como N_SNAPS=1 hoy, cada line chart muestra 1 punto;
-              | la lógica admite N timestamps cuando se agreguen más
-              | snaps al global_history.json.
-```
 
 ---
 
@@ -424,8 +375,8 @@ public/demo-data/     | Archivo source of truth, versionable, editable
                       |
 app/page.tsx Navbar   | fetch admins.json + comparar publicKey → badge
                       |
-app/global/page.tsx   | mismo patrón, lee del mismo JSON
-  Navbar              |
+app/hackathonview/    | mismo patrón, lee del mismo JSON desde el
+app/globalhackathon/  | navbar reutilizado en cada route.
 ```
 
 Para agregar/quitar un admin: editar `admins.json` directamente, después
@@ -462,7 +413,7 @@ SecHexnode        | Card del nodo con imagen /assets/Node.png, scan line
                   |
 SecPillars        | HOLDER SCAN, LIQMAP, TIME SERIES (3 cards "How it works").
                   |
-SecPlans          | FREE (-> /hackathonview) + ALPHA (-> /global). Sin /demovip,
+SecPlans          | FREE (-> /hackathonview) + ALPHA (-> /globalhackathon). Sin /demovip,
                   | /freetoken ni /payment (esas rutas no existen en demo).
 ```
 
@@ -477,8 +428,10 @@ TokenSelector                | Lee categories.json + global_history.json
                              | (no /api/category_list ni /api/globalrun_history).
                              |
 MetricsRoller                | No usa /api/db_metrics_summary: computa
-                             | ntokens/nsnapshots/nwallets/npools/ndays
-                             | desde tokens.json + global_history.json local.
+                             | ntokens (targets.json) + nsnapshots/ndays
+                             | (/api/snap_index) + nwallets (snapshots del
+                             | latest folder) + npools (dexscraptokens
+                             | del latest folder).
                              |
 VipInterestButton            | Sin POST a /api/vipinterest_submit (no hay
                              | backend para registrar interes). Solo
@@ -490,10 +443,10 @@ SecCommunityReq              | Fetch a Next.js Route Handler
 Navbarx_home                 | Sin /api/wallet_status (admin solo via
                              | admins.json). Mobile drawer custom (state
                              | React) en lugar de Bootstrap offcanvas.
-                             | Items: WHAT IS (/), GLOBAL (/globalhackathon),
-                             | HACKATHON (/hackathonview). /global queda sin
-                             | entrada en el nav — la ruta sigue existiendo
-                             | pero no se enlaza desde la landing.
+                             | Items: WHAT IS (/) + HACKATHON
+                             | (/hackathonview). La ruta /global fue
+                             | eliminada (app/global/ borrado); /globalhackathon
+                             | sigue como destino del CTA ALPHA en SecPlans.
 ```
 
 ---
@@ -548,13 +501,15 @@ makesnap.ts (orquesta TODO secuencial, por token)
                      getTokenAccounts paginado (hasta MAX_PAGES=20,
                      1000 accounts/pag), agrupado por owner
                      top 100 enriquecido + bucketize.
-                     Persistencia limpia (sin LATEST sueltos):
-                       holders/<YYYY_MM_DD>/<slug>.json
-                       snapshots/<YYYY_MM_DD>/<slug>.json
-                       dexscraptokens/<YYYY_MM_DD>/all.json
-                     Cada run del mismo dia sobreescribe los archivos
-                     del dia (sin sufijo de runts). Front auto-detecta
-                     el folder mas reciente via GET /api/snap_index.
+                     Persistencia con sufijo de hora:
+                       holders/<YYYY_MM_DD__HH_MM>/<slug>.json
+                       snapshots/<YYYY_MM_DD__HH_MM>/<slug>.json
+                       dexscraptokens/<YYYY_MM_DD__HH_MM>/all.json
+                     Cada run genera un folder nuevo (basado en hora local
+                     del server al iniciar). Folders viejos sin sufijo
+                     YYYY_MM_DD tambien son aceptados por compat. Front
+                     auto-detecta el folder mas reciente via
+                     GET /api/snap_index (orden lex = orden cronologico).
   Tiempo:  ~5-15s por token grande (depende de #pages)
            ~40-90s total para 8 tokens (secuencial)
   Requiere: HELIUS_API_KEY en .env.local (Next la carga, spawn la hereda)

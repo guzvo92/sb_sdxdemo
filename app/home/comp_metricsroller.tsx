@@ -1,9 +1,11 @@
 "use client";
 
 // Roller infinito con metricas agregadas del scanner.
-// En el demo no hay endpoint /api/db_metrics_summary, asi que computamos
-// los numeros desde los JSONs estaticos: tokens.json (cuantos tokens),
-// global_history.json (cuantos snaps), holders/*.json (suma wallets), etc.
+// Lee de las fuentes reales que REGEN actualiza:
+//   - targets.json            -> ntokens (CAs validos no placeholder)
+//   - /api/snap_index         -> nsnapshots (folders) + ndays (dias unicos)
+//   - snapshots/<latest>/*    -> nwallets (sum nholders_full)
+//   - dexscraptokens/<latest> -> npools (sum tokens[].npools)
 
 import { useEffect, useState } from "react";
 
@@ -29,6 +31,17 @@ function formatNumber(n: number): string {
   return String(n);
 }
 
+// Filtra CAs validos: descarta placeholders (PASTE_*) y largos <32.
+function validTargets(arr: any[]): { slug: string; ca: string }[] {
+  const out: { slug: string; ca: string }[] = [];
+  for (const t of (arr || [])) {
+    const ca = String(t?.ca || "");
+    if (!ca || ca.startsWith("PASTE_") || ca.length < 32) continue;
+    out.push({ slug: String(t.slug || ""), ca });
+  }
+  return out;
+}
+
 export function Comp_MetricsRoller() {
   const [metrics, setMetrics] = useState<RollerMetrics>({
     ntokens: 0,
@@ -44,31 +57,50 @@ export function Comp_MetricsRoller() {
 
     async function computeMetrics() {
       try {
-        const [tokensRes, histRes] = await Promise.all([
-          fetch("/demo-data/tokens.json").then(r => r.json()),
-          fetch("/demo-data/global/global_history.json").then(r => r.json()),
+        const [targetsRes, idxRes] = await Promise.all([
+          fetch("/targets.json",      { cache: "no-store" }).then(r => r.json()),
+          fetch("/api/snap_index",    { cache: "no-store" }).then(r => r.json()),
         ]);
 
-        // ntokens: cuantos tokens trackeados.
-        const ntokens = Array.isArray(tokensRes) ? tokensRes.length : 0;
-        // nsnapshots: suma de timestamps de todos los tokens del history.
-        let nsnapshots = 0;
-        if (histRes.ok && Array.isArray(histRes.tokens)) {
-          for (const t of histRes.tokens) {
-            nsnapshots += (t.timestamps?.length || 0);
-          }
-        }
-        // nwallets: suma de "holders" declarados en tokens.json.
+        // ntokens: targets validos en targets.json (los que REGEN scrapea).
+        const targets = validTargets(targetsRes?.targets);
+        const ntokens = targets.length;
+
+        // nsnapshots: cantidad de folders datados en snapshots/.
+        const snapFolders: string[] = idxRes?.snapshots?.folders || [];
+        const nsnapshots = snapFolders.length;
+
+        // ndays: dias unicos a partir del prefijo YYYY_MM_DD de cada folder.
+        const uniqueDays = new Set<string>();
+        for (const f of snapFolders) uniqueDays.add(f.slice(0, 10));
+        const ndays = uniqueDays.size;
+
+        const latestSnap = idxRes?.snapshots?.latest;
+        const latestDex  = idxRes?.dexscraptokens?.latest;
+
+        // nwallets: suma de nholders_full por slug en el snapshot mas reciente.
         let nwallets = 0;
-        if (Array.isArray(tokensRes)) {
-          for (const t of tokensRes) {
-            nwallets += (t.holders || 0);
+        if (latestSnap && targets.length > 0) {
+          const snaps = await Promise.all(
+            targets.map(t => fetch(`/demo-data/snapshots/${latestSnap}/${t.slug}.json`)
+              .then(r => r.ok ? r.json() : null)
+              .catch(() => null)),
+          );
+          for (const s of snaps) {
+            if (s && s.nholders_full != null) nwallets += Number(s.nholders_full) || 0;
           }
         }
-        // npools: 1 pool por token (asuncion del demo).
-        const npools = ntokens;
-        // ndays: el demo arranca con 1 dia.
-        const ndays = nsnapshots > 0 ? 1 : 0;
+
+        // npools: suma de npools por token en el dexscrape mas reciente.
+        let npools = 0;
+        if (latestDex) {
+          const dex = await fetch(`/demo-data/dexscraptokens/${latestDex}/all.json`)
+            .then(r => r.ok ? r.json() : null)
+            .catch(() => null);
+          if (dex && Array.isArray(dex.tokens)) {
+            for (const t of dex.tokens) npools += Number(t?.npools) || 0;
+          }
+        }
 
         if (!cancelled) {
           setMetrics({ ntokens, nsnapshots, nwallets, npools, ndays });

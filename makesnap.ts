@@ -104,14 +104,16 @@ function logStep(msg: string): void {
   console.log(`[t+${s.padStart(6)}s] ${msg}`);
 }
 
-// Carpeta de fecha YYYY_MM_DD basada en la hora local del server.
-// Usada para archivar snapshots/holders/dexscraptokens historicos.
+// Carpeta YYYY_MM_DD__HH_MM basada en la hora local del server.
+// Sufijo __HH_MM permite varios snapshots por dia sin sobreescribir.
 function dateFolder(): string {
   const d = new Date();
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, "0");
   const dd = String(d.getDate()).padStart(2, "0");
-  return `${y}_${m}_${dd}`;
+  const hh = String(d.getHours()).padStart(2, "0");
+  const mn = String(d.getMinutes()).padStart(2, "0");
+  return `${y}_${m}_${dd}__${hh}_${mn}`;
 }
 
 function parseArgs(argv: string[]): CliArgs {
@@ -237,10 +239,10 @@ async function processToken(
     const allEnriched = enrichHolders(raw, asset.supply, asset.price);
     const snap = buildSnapshotRich(allEnriched, asset);
 
-    // Write — layout limpio: solo <YYYY_MM_DD>/<slug>.json (sin sufijo
-    // de runts ni LATEST suelto). Cada run del mismo dia sobreescribe el
-    // archivo del slug. Para auto-detectar el folder mas reciente desde
-    // el front, usar GET /api/snap_index.
+    // Write — layout: <YYYY_MM_DD__HH_MM>/<slug>.json. El sufijo de hora
+    // y minuto permite que varios snapshots del mismo dia coexistan sin
+    // pisarse. El front auto-detecta el folder mas reciente via
+    // GET /api/snap_index (orden lexicografico = orden cronologico).
     if (dryRun) {
       logStep(`  [${slug}] dry-run · skip write`);
     } else {

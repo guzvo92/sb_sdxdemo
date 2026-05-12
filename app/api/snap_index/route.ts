@@ -1,7 +1,8 @@
-// GET /api/snap_index — lista carpetas de fecha YYYY_MM_DD en
-// public/demo-data/snapshots/ y devuelve cual es la mas reciente.
-// Sin auth · lectura publica. El front lo usa para construir los paths
-// de fetch a snapshots/<latest>/<slug>.json sin hardcodear la fecha.
+// GET /api/snap_index — lista carpetas de fecha YYYY_MM_DD__HH_MM (o
+// el formato viejo YYYY_MM_DD sin sufijo) en public/demo-data/snapshots/
+// y devuelve cual es la mas reciente. Sin auth · lectura publica. El
+// front lo usa para construir los paths de fetch a
+// snapshots/<latest>/<slug>.json sin hardcodear la fecha.
 
 import { NextResponse } from "next/server";
 import { readdir } from "fs/promises";
@@ -11,14 +12,17 @@ const SNAPSHOTS_DIR = path.join(process.cwd(), "public", "demo-data", "snapshots
 const HOLDERS_DIR   = path.join(process.cwd(), "public", "demo-data", "holders");
 const DEXSCRAP_DIR  = path.join(process.cwd(), "public", "demo-data", "dexscraptokens");
 
-// Lista entries de un dir y filtra solo subcarpetas con nombre YYYY_MM_DD.
+// Acepta YYYY_MM_DD y YYYY_MM_DD__HH_MM. Lexicografico = cronologico
+// porque __HH_MM ordena despues del dia desnudo.
+const DATE_FOLDER_RE = /^\d{4}_\d{2}_\d{2}(__\d{2}_\d{2})?$/;
+
 async function listDateFolders(dir: string): Promise<string[]> {
   try {
     const entries = await readdir(dir, { withFileTypes: true });
     return entries
-      .filter(e => e.isDirectory() && /^\d{4}_\d{2}_\d{2}$/.test(e.name))
+      .filter(e => e.isDirectory() && DATE_FOLDER_RE.test(e.name))
       .map(e => e.name)
-      .sort(); // YYYY_MM_DD ordena lexicograficamente como cronologico
+      .sort();
   } catch {
     return [];
   }
