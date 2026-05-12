@@ -1,7 +1,7 @@
 # summary.md — SatellDex Demo
-# version: 2.3 (12-may-26 01:47)
-# tokens: ~8200
-# lineas: 674
+# version: 2.4 (12-may-26 02:42)
+# tokens: ~8600
+# lineas: 710
 
 > Concept proof of **on-chain Solana holder intelligence** with community-
 > driven token tracking. Built for the Colosseum Solana Frontier Hackathon
@@ -130,9 +130,13 @@ sb_satelldexdemo/
 │   │   │                          /api/community_request y /api/regenerate)
 │   │   ├── scraper.ts          ← DexScreener client: fetchDexScreenerToken +
 │   │   │                          fetchAllTargets (concurrencia 5)
-│   │   └── helius.ts           ← Helius DAS client: fetchTokenAsset +
-│   │                              fetchTokenHolders paginado +
-│   │                              enrichHolders + buildSnapshotRich
+│   │   ├── helius.ts           ← Helius DAS client: fetchTokenAsset +
+│   │   │                          fetchTokenHolders paginado +
+│   │   │                          enrichHolders + buildSnapshotRich
+│   │   └── demoSdk.ts          ← Sdkrout_back compatible · fetch local +
+│   │                              snap_index para auto-detect del folder.
+│   │                              Reemplaza el SDK del backend prod en
+│   │                              hackathonview + globalhackathon
 │   ├── layout/
 │   │   └── navbarhome.tsx      ← navbar fijo de la landing · drawer mobile
 │   │                              custom (sin Bootstrap) · admin badge via
@@ -166,10 +170,37 @@ sb_satelldexdemo/
 │   │   ├── community_request/
 │   │   │   └── route.ts        ← GET (lista) + POST (append, valida
 │   │   │                          ed25519 + anti-replay 300s)
-│   │   └── regenerate/
-│   │       └── route.ts        ← GET (ultimo scrape) + POST (admin only:
-│   │                              valida firma + dispara DexScreener +
-│   │                              escribe dexscraptokens.json)
+│   │   ├── regenerate/
+│   │   │   └── route.ts        ← POST (admin) fire-and-forget · spawn
+│   │   │                          tsx makesnap.ts + responde inmediato
+│   │   ├── snap_index/
+│   │   │   └── route.ts        ← GET lista carpetas YYYY_MM_DD en
+│   │   │                          snapshots/holders/dexscraptokens y
+│   │   │                          devuelve latest de cada uno
+│   │   └── snap_progress/
+│   │       └── route.ts        ← GET estado actual del snapshot
+│   │                              (poleado cada 1s por el navbar)
+│   ├── utils/
+│   │   └── generalutils.ts     ← slicetext("abc…xyz") usado por
+│   │                              sec_holdertable + sec_datatext del clone
+│   ├── hackathonview/          ← Vista jueces Colosseum — clonada del prod
+│   │   ├── HackathonSignGate.tsx        ← gate ed25519 24h en localStorage
+│   │   ├── page.tsx                     ← chips de tokens memes + sign por
+│   │   │                                   cada uno + render del VIP
+│   │   ├── sec_datatext_hackathon.tsx   ← 864 lineas · pie + cards de
+│   │   │                                   metricas detalladas del token
+│   │   │                                   (chartjs-plugin-datalabels)
+│   │   └── sec_holdertable_hackathon.tsx ← tabla holders top 100 (mode
+│   │                                       top100 habilitado, vip y all
+│   │                                       disabled "available in VIP")
+│   ├── globalhackathon/        ← Vista global jueces Colosseum
+│   │   ├── page.tsx                       ← 2 HUD tabs (snapshot + clusters
+│   │   │                                     by token) · firma por tab
+│   │   ├── sec_yestmul_liqclust_h.tsx    ← liquidity clusters comparativo
+│   │   ├── sec_yestmul_nwalls_h.tsx      ← wallets USD bucket counts
+│   │   ├── sec_yestmul_nwallsper_h.tsx   ← wallets USD bucket %
+│   │   └── sec_token_nwallsclust_h.tsx   ← line chart por token, evolucion
+│   │                                       de brackets habilitados
 │   └── global/                 ← Global VIP dashboard route
 │       ├── page.tsx                  ← sign gate + 3 HUD tabs
 │       ├── sec_yestmul_liqclust.tsx  ← bar chart: % liquidity clusters
@@ -291,8 +322,13 @@ Ruta                     | Mensaje firmado                              | Conten
                          |                                              |     snapshots/ + holders/ +
                          |                                              |     dexscraptokens/ y devuelve
                          |                                              |     el latest de cada uno
-/hackathonview           | (pendiente Fase 2 — no clonado todavia)      | 404 hoy · clone planeado
-/globalhackathon         | (pendiente Fase 2 — no clonado todavia)      | 404 hoy · clone planeado
+/hackathonview           | satelldex-hackathon:judge-access (gate 24h)  | Vista jueces Colosseum por
+                         | + satelldex-hackathon:judge-token:<slug>:<ts>|     token (memes) · sign por
+                         |                                              |     cambio de slug · cards VIP +
+                         |                                              |     tabla holders top 100
+/globalhackathon         | satelldex-hackathon:judge-access (gate 24h)  | Vista global memes para
+                         | + satelldex-hackathon:judge-token:<hud>:<ts> |     jueces · 2 HUD tabs con
+                         |                                              |     sign por tab
 ```
 
 Las rutas con sign gate (/tracked, /global) re-piden firma en cada refresh

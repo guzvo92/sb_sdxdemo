@@ -14,8 +14,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
-        {/* Chart.js via CDN — usado por /global. Sin npm dep, sin bundle bloat. */}
+        {/* Chart.js via CDN — usado por /global y /hackathonview. Sin npm dep.
+            Plugin datalabels lo usa sec_datatext_hackathon para labels en pies. */}
         <script src="https://cdn.jsdelivr.net/npm/chart.js" async></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2" async></script>
       </head>
       <body>
         <AppWalletProvider>{children}</AppWalletProvider>

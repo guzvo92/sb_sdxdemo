@@ -124,7 +124,17 @@ export default function Page() {
       fetch(`/demo-data/holders/${snapIdx.holders}/${activeSlug}.json`).then(r => r.json()),
     ]).then(([s, h]) => {
       setSnap(s);
-      setHolders((h as Holder[]).slice(0, 100));
+      // Adapta el shape rico de Helius {owner, amount, value_today, ...} al
+      // shape simple {address, amount, usd} que la HoldersTable consume.
+      // Fallback a address/usd si vienen en el shape viejo (dummy seed).
+      const rows: Holder[] = Array.isArray(h)
+        ? h.slice(0, 100).map((r: any) => ({
+            address: r.owner ?? r.address ?? "",
+            amount:  Number(r.amount ?? 0),
+            usd:     Number(r.value_today ?? r.usd ?? 0),
+          }))
+        : [];
+      setHolders(rows);
     }).catch(() => {}).finally(() => setLoadingDetail(false));
   }, [activeSlug, snapIdx]);
 
