@@ -1,0 +1,6 @@
+{
+  "_notice": "Source of truth file-based para los community token requests del demo.",
+  "_format": "Cada request lleva token_address (CA base58), symbol, name, price_usd, fdv_mc, npools, votes, submitted_by (pubkey base58), submitted_at (unix ts), message firmado, signature_b64. El POST a /api/community_request appende. El GET lo devuelve.",
+  "ok": true,
+  "requests": []
+}

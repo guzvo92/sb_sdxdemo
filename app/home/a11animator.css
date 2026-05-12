@@ -1,0 +1,86 @@
+.animated-text {
+    font-family: "Courier New", Courier, monospace;
+    white-space: pre-wrap; /* Para respetar los saltos de línea */
+    color: #fdfdfd;
+    transition: all 0.2s ease;
+  }
+  
+  .text-animation-container {
+    background-color: #000;
+    color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  }
+  
+
+#animator{
+  height:450px;
+}
+
+#sectioncmd {
+  background-repeat: no-repeat; /* No repetir la imagen */
+  background-size: cover; /* Ajustar la imagen al tamaño del contenedor */
+  background-position: center; /* Centrar la imagen */
+  margin: 0 auto; /* Centrar horizontalmente */
+  border: 2px solid #fefefe; /* Opcional: agregar un borde */
+  padding: 20px; /* Opcional: espacio interno */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Opcional: sombra */
+}
+
+
+/*SMALL VIEW */
+@media (max-width: 768px) {
+
+  .animated-text {
+    font-size:11px;
+    line-height: 1.5;
+  }
+
+  .imgmining{max-width:300px;}
+
+  #animator {
+    height: 330px;
+  }
+
+  #sectioncmd {
+    width: 280px;
+    height: 310px;
+    background-image: url('../../public/home/cmdsmall2.png');
+  }
+
+}
+
+/*MOBILE PADDING FOR HERO GRID*/
+@media (max-width: 768px) {
+  .hero-grid {
+    padding: 12px 16px 24px !important;
+  }
+  .hero-container {
+    padding-top: 16px !important;
+  }
+  .hero-fila1 {
+    margin-bottom: 8px !important;
+  }
+  .hero-tokensrow {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+}
+
+/*MAX VIEW */
+@media (min-width: 769px) {
+  .animated-text {
+    font-size: 17px;
+    line-height: 1.5;
+  }
+
+  #sectioncmd {
+    width: 500px; 
+    height: 390px; 
+    background-image: url('../../public/home/cmd.png');
+  }
+ 
+  .postbanner_subtitlebox{max-width:400px}  
+  .imgmining{max-width:500px;}
+}

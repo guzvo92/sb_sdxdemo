@@ -6,10 +6,47 @@
   --border: #164e63;
   --cyan: #06b6d4;
   --violet: #a78bfa;
+  /* --accent es alias del cyan; el home clonado del prod
+     referencia var(--accent) en navbar, hexnode y banners */
+  --accent: #06b6d4;
 }
 
 body {
   background: var(--bg);
   color: #e2e8f0;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* Scan line animada para el navbar (clonado de sb_satelldex) */
+.nav-scanline {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 22%, transparent), transparent);
+  animation: nav-scan 8s linear infinite;
+  opacity: 0.35;
+}
+@keyframes nav-scan {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Punto verde pulsante "LIVE" en el navbar */
+.nav-pulse-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 8px #22c55e;
+  animation: nav-pulse 1.6s ease-in-out infinite;
+}
+@keyframes nav-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.4; transform: scale(0.85); }
+}
+
+/* Esconde elementos solo mobile / solo desktop segun viewport */
+@media (max-width: 991.98px) {
+  .nav-desktop { display: none !important; }
+}
+@media (min-width: 992px) {
+  .nav-hamburger { display: none !important; }
 }

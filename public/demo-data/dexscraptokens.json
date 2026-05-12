@@ -1,0 +1,10 @@
+{
+  "_notice": "Output del scraping DexScreener para los CAs en public/targets.json. Se sobreescribe cada vez que un admin dispara el botón REGEN o hace POST /api/regenerate.",
+  "ok": true,
+  "scraped_at": null,
+  "scraped_at_ts": null,
+  "scraped_by": null,
+  "source": "dexscreener",
+  "count": 0,
+  "tokens": []
+}

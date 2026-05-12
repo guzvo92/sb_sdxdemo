@@ -1,0 +1,14 @@
+{
+  "status": "error",
+  "started_at": "2026-05-12T07:18:10.762Z",
+  "started_at_ts": 1778570290,
+  "last_update": "2026-05-12T07:18:10.766Z",
+  "phase": "init",
+  "current_idx": 0,
+  "current_total": 0,
+  "current_token": null,
+  "current_step": "booting",
+  "completed": [],
+  "elapsed_ms": 4,
+  "error": "missing_helius_key (set HELIUS_API_KEY env var)"
+}

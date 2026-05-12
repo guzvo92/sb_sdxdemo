@@ -244,7 +244,7 @@ function Navbar() {
   // lista de admins file-based (mismo source que el navbar del home)
   const [adminPubkeys, setAdminPubkeys] = useState<string[]>([]);
   useEffect(() => {
-    fetch("/demo-data/admins.json")
+    fetch("/admins.json")
       .then(r => r.json())
       .then((d: { admins: { pubkey: string }[] }) => {
         setAdminPubkeys((d.admins || []).map(a => a.pubkey));

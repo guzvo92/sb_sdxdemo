@@ -4,7 +4,7 @@
   "_usage": "El front lee este archivo y muestra badge ADMIN en el navbar si la wallet conectada esta en la lista.",
   "admins": [
     {
-      "pubkey": "REPLACE_WITH_REAL_PUBKEY_BASE58",
+      "pubkey": "HQBSg5KdLnghD6exazGjqm4BrhrMxDfzudWYqDqLWor8",
       "label": "Owner",
       "added_on": "2026-05-10"
     }
