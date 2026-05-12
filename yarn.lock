@@ -1139,7 +1139,7 @@
     "@wallet-standard/core" "^1.1.1"
     js-base64 "^3.7.5"
 
-"@solana-mobile/wallet-adapter-mobile@^2.2.0":
+"@solana-mobile/wallet-adapter-mobile@^2.2.0", "@solana-mobile/wallet-adapter-mobile@^2.2.8":
   version "2.2.8"
   resolved "https://registry.yarnpkg.com/@solana-mobile/wallet-adapter-mobile/-/wallet-adapter-mobile-2.2.8.tgz#747fc43bd90072d76a5a5912f83d211988f6598e"
   integrity sha512-ZbXY3/0+UnnyS0hvArpO1b1pYzaQAiVIp+HBUm11aLEkE5+ISvHTRPr/bCEUXZfPkez/1n9zH3H0leK25Lj6Nw==
@@ -1782,7 +1782,7 @@
     "@particle-network/solana-wallet" "^1.3.2"
     "@solana/wallet-adapter-base" "^0.9.27"
 
-"@solana/wallet-adapter-phantom@^0.9.29":
+"@solana/wallet-adapter-phantom@^0.9.24", "@solana/wallet-adapter-phantom@^0.9.29":
   version "0.9.29"
   resolved "https://registry.yarnpkg.com/@solana/wallet-adapter-phantom/-/wallet-adapter-phantom-0.9.29.tgz#2179b82a06306ee06bce4d9a1097a566b6a0c854"
   integrity sha512-nAFvjtX2S1aRLzi70CSLajsmixGxev+1O1GzGzety4eyfv2AYxTHEuDIJySugcMTtSTleVpOMhHXjzlUkxuf1w==
@@ -1836,7 +1836,7 @@
   dependencies:
     "@solana/wallet-adapter-base" "^0.9.27"
 
-"@solana/wallet-adapter-solflare@^0.6.33":
+"@solana/wallet-adapter-solflare@^0.6.28", "@solana/wallet-adapter-solflare@^0.6.33":
   version "0.6.33"
   resolved "https://registry.yarnpkg.com/@solana/wallet-adapter-solflare/-/wallet-adapter-solflare-0.6.33.tgz#9dd22ccc95078b85a4e14c752071aedd2718e08b"
   integrity sha512-eYDjpXMF+LyfWf5jG89IqJG2ehaEsWvv7P3y3NjPmhCqe0WjfFc2EwED19G4R0JUqdhnY5zFj+gn3pJ3ystGhg==

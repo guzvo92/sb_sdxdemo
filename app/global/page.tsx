@@ -10,6 +10,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import Sec_yestmulti_liqclusters_barchart from "./sec_yestmul_liqclust";
 import Sec_yestmulti_nwallets_barchart from "./sec_yestmul_nwalls";
 import Sec_yestmulti_nwalletspercent_barchart from "./sec_yestmul_nwallsper";
+import Sec_nwallsclust from "./sec_token_nwallsclust";
 
 const WalletMultiButton = dynamic(
   () => import("@solana/wallet-adapter-react-ui").then(mod => mod.WalletMultiButton),
@@ -18,7 +19,7 @@ const WalletMultiButton = dynamic(
 
 const SIGN_MSG_GLOBAL = "satelldex-demo:view-global";
 
-// metricas que cada bar chart consume — mismas keys que el real
+// metricas que cada bar chart consume
 const LIQ_METRICS = [
   "percent_bigpool", "percent_top1_10", "percent_top11_20",
   "percent_top21_50", "percent_top51_100", "percent_others"
@@ -91,7 +92,7 @@ export default function GlobalPage() {
   const [loading, setLoading] = useState(true);
   const [fullGlobal, setFullGlobal] = useState<any[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [activeHud, setActiveHud] = useState<"tokens" | "snapshot">("snapshot");
+  const [activeHud, setActiveHud] = useState<"tokens" | "snapshot" | "clustbytoken">("snapshot");
 
   // sin session ni cookie: cada refresh requiere re-firmar.
 
@@ -180,14 +181,28 @@ export default function GlobalPage() {
 
           {/* HUD tabs */}
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 22 }}>
-            <HudBtn label="◎ TOKENS"        active={activeHud === "tokens"}   onClick={() => setActiveHud("tokens")} />
-            <HudBtn label="◈ LAST SNAPSHOT" active={activeHud === "snapshot"} onClick={() => setActiveHud("snapshot")} />
+            <HudBtn label="◎ TOKENS"             active={activeHud === "tokens"}        onClick={() => setActiveHud("tokens")} />
+            <HudBtn label="◈ LAST SNAPSHOT"      active={activeHud === "snapshot"}      onClick={() => setActiveHud("snapshot")} />
+            <HudBtn label="▣ CLUSTERS BY TOKEN"  active={activeHud === "clustbytoken"}  onClick={() => setActiveHud("clustbytoken")} />
           </div>
 
           {loading && <p style={{ color: "#475569" }}>loading…</p>}
 
           {!loading && activeHud === "tokens" && (
             <TokensTab fullGlobal={fullGlobal} tokenCatMap={tokenCatMap} uncategorized={uncategorized} categories={categories} />
+          )}
+
+          {!loading && activeHud === "clustbytoken" && fullGlobal.length > 0 && (
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(420px, 1fr))", gap: 14 }}>
+              {fullGlobal.map((e) => (
+                <Sec_nwallsclust
+                  key={`clustbytoken_${e.token}`}
+                  token={e.token}
+                  globaldata={e.data}
+                  suffix="cbt"
+                />
+              ))}
+            </div>
           )}
 
           {!loading && activeHud === "snapshot" && fullGlobal.length > 0 && (

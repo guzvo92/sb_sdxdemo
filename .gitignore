@@ -20,11 +20,13 @@ skills-lock.json
 gen_global_dummy.py
 
 # documentos privados internos: analisis vs competencia, planes,
-# investigaciones, instrucciones de copilots, ideas manuales
+# investigaciones, instrucciones de copilots, ideas manuales, hack notes
 studyproject_*.md
 v[0-9]_studyproject_*.md
 instructionscopilot.md
 ideasmanual.md
+hack_*.md
+hack[0-9]_*.md
 
 # env locales y secrets
 .env

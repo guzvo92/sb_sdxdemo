@@ -40,14 +40,17 @@ const LIQ_BRACKETS = [
   { key: "top51_100", label: "Top 51–100", color: "#06b6d4" },
   { key: "others",    label: "Others",     color: "#94a3b8" },
 ];
+// Brackets de Account Distribution con etiquetas marinas + iconos.
+// Cada bracket lleva un nombre de criatura + emoji para que la card sea
+// visualmente distinguible.
 const ACC_BRACKETS = [
-  { key: "over50000",    label: "+$50k",      color: "#fbbf24" },
-  { key: "10000to50000", label: "$10k–$50k",  color: "#fb923c" },
-  { key: "5000to10000",  label: "$5k–$10k",   color: "#f43f5e" },
-  { key: "1000to5000",   label: "$1k–$5k",    color: "#a855f7" },
-  { key: "500to1000",    label: "$500–$1k",   color: "#6366f1" },
-  { key: "100to500",     label: "$100–$500",  color: "#22c55e" },
-  { key: "under100",     label: "<$100",      color: "#ef4444" },
+  { key: "over50000",    label: "+$50k",      color: "#fbbf24", tier: "WHALE",    icon: "🐋" },
+  { key: "10000to50000", label: "$10k–$50k",  color: "#fb923c", tier: "SHARK",    icon: "🦈" },
+  { key: "5000to10000",  label: "$5k–$10k",   color: "#f43f5e", tier: "DOLPHIN",  icon: "🐬" },
+  { key: "1000to5000",   label: "$1k–$5k",    color: "#a855f7", tier: "FISH",     icon: "🐟" },
+  { key: "500to1000",    label: "$500–$1k",   color: "#6366f1", tier: "CRAB",     icon: "🦀" },
+  { key: "100to500",     label: "$100–$500",  color: "#22c55e", tier: "SHRIMP",   icon: "🦐" },
+  { key: "under100",     label: "<$100",      color: "#ef4444", tier: "PLANKTON", icon: "🦠" },
 ];
 const TOKEN_BRACKETS = [
   { key: "over100M",  label: "+100M",      color: "#fbbf24" },
@@ -258,7 +261,7 @@ export default function Page() {
                   isPercent: true,
                 }))} />
                 <DistCard title="Account Distribution" rows={ACC_BRACKETS.map(b => ({
-                  label: b.label, color: b.color,
+                  label: b.label, color: b.color, tier: b.tier, icon: b.icon,
                   value: parseInt(String(snap[`acc_${b.key}`] ?? 0)),
                   isPercent: false,
                 }))} />
@@ -595,8 +598,12 @@ function KV({ k, v, accent }: { k: string; v: string; accent?: boolean }) {
   );
 }
 
-function DistCard({ title, rows }: { title: string; rows: { label: string; color: string; value: number; isPercent: boolean }[] }) {
+function DistCard({ title, rows }: { title: string; rows: { label: string; color: string; value: number; isPercent: boolean; tier?: string; icon?: string }[] }) {
   const max = Math.max(...rows.map(r => r.value)) || 1;
+  // si alguna row tiene tier/icon (ej. Account Distribution con etiquetas marinas),
+  // la columna izquierda se ensancha para acomodar el icono + tier + label.
+  const hasTier = rows.some(r => r.tier);
+  const leftCol = hasTier ? "150px" : "84px";
   return (
     <div style={{ background: "var(--panel)", border: "1px solid var(--border)", borderRadius: 12, padding: 14 }}>
       <h3 style={{ color: "#fff", fontWeight: 700, fontSize: 13, marginBottom: 12 }}>{title}</h3>
@@ -604,8 +611,12 @@ function DistCard({ title, rows }: { title: string; rows: { label: string; color
         {rows.map((r, i) => {
           const w = (r.value / max) * 100;
           return (
-            <div key={i} style={{ display: "grid", gridTemplateColumns: "84px 1fr 70px", gap: 8, alignItems: "center" }}>
-              <span style={{ color: r.color, fontSize: 11, fontWeight: 700, fontFamily: "monospace" }}>{r.label}</span>
+            <div key={i} style={{ display: "grid", gridTemplateColumns: `${leftCol} 1fr 70px`, gap: 8, alignItems: "center" }}>
+              <span style={{ color: r.color, fontSize: 11, fontWeight: 700, fontFamily: "monospace", display: "flex", alignItems: "center", gap: 4 }}>
+                {r.icon && <span style={{ fontSize: 14 }}>{r.icon}</span>}
+                {r.tier && <span style={{ minWidth: 56 }}>{r.tier}</span>}
+                <span style={{ color: "#94a3b8", fontWeight: 400 }}>{r.label}</span>
+              </span>
               <div style={{ height: 14, background: "rgba(255,255,255,0.05)", borderRadius: 3, overflow: "hidden" }}>
                 <div style={{ width: `${Math.max(0.5, w)}%`, height: "100%", background: r.color, opacity: 0.85 }} />
               </div>

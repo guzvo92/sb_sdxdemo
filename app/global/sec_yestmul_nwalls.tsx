@@ -2,6 +2,28 @@
 
 import { useEffect, useState } from "react";
 
+// Etiquetas marinas para los brackets de Account Distribution.
+// Cada bracket se identifica con un nombre de criatura marina + emoji
+// para que la leyenda del chart sea visualmente distinguible.
+const BRACKET_META: Record<string, { icon: string; tier: string; range: string }> = {
+  "over50000":    { icon: "🐋", tier: "WHALE",    range: "+$50k"     },
+  "10000to50000": { icon: "🦈", tier: "SHARK",    range: "$10k-50k"  },
+  "5000to10000":  { icon: "🐬", tier: "DOLPHIN",  range: "$5k-10k"   },
+  "1000to5000":   { icon: "🐟", tier: "FISH",     range: "$1k-5k"    },
+  "500to1000":    { icon: "🦀", tier: "CRAB",     range: "$500-1k"   },
+  "100to500":     { icon: "🦐", tier: "SHRIMP",   range: "$100-500"  },
+  "under100":     { icon: "🦠", tier: "PLANKTON", range: "<$100"     },
+  "over100":      { icon: "🐠", tier: "+FISH",    range: "+$100"     },
+};
+// Devuelve label decorado si la metrica corresponde a un bracket conocido;
+// si no, fallback al label generico.
+function prettyBracketLabel(metric: string): string {
+  const key = metric.replace(/^nholders_/, "").replace(/^percent_nholders_/, "").replace(/^perc_nholders_/, "");
+  const m = BRACKET_META[key];
+  if (m) return `${m.icon} ${m.tier} ${m.range}`;
+  return metric.replace(/nholders_/g, "").replace(/percent_/g, "").replace(/perc_/g, "").replace(/_/g, " ").toUpperCase();
+}
+
 interface Category { id: number; name: string; color: string; tokens: string[]; }
 interface Props {
   fullGlobal: any[];
@@ -52,7 +74,7 @@ export default function Sec_yestmulti_nwallets_barchart({ fullGlobal, categories
           return val;
         });
         return {
-          label: metric.replace(/nholders_/g, "").replace(/_/g, " ").toUpperCase(),
+          label: prettyBracketLabel(metric),
           data: values,
           backgroundColor: color + "AA",
           borderColor: color,
