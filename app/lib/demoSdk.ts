@@ -41,18 +41,135 @@ export class Sdkrout_back {
     }
   }
 
-  // Lee el snapshot rico del folder mas reciente. El backend prod devuelve
-  // { ok, token, idsnap, data }. Aca devolvemos el snapshot directo como
-  // data y rellenamos idsnap con el runts.
+  // Lee el snapshot rico del folder mas reciente y lo enriquece combinando
+  // con dexscraptokens.json (metadata DEX) + holders/<slug>.json (sum por
+  // bucket). Devuelve el shape gordo que sec_datatext_hackathon espera:
+  // an_nholders_*, an_perc_nholders_*, an_tokens_sum_*, dex_price, name,
+  // dex_supply_raw, indx_supplyfound, amount_lost, perc_lost,
+  // dex_main_pool_found, dex_full_info.pools_high.
   async fetch_snapshot_latest(token: string): Promise<{ ok: boolean; token: string; idsnap: number; data: any }> {
     try {
       const idx = await getIdx();
-      const folder = idx.snapshots.latest;
-      if (!folder) return { ok: false, token, idsnap: 0, data: null };
-      const r = await fetch(`/demo-data/snapshots/${folder}/${token}.json`, { cache: "no-store" });
-      if (!r.ok) return { ok: false, token, idsnap: 0, data: null };
-      const data = await r.json();
-      return { ok: true, token, idsnap: parseInt(data?.runts ?? "0"), data };
+      const snapFolder = idx.snapshots.latest;
+      const holdFolder = idx.holders.latest;
+      const dexFolder  = idx.dexscraptokens.latest;
+      if (!snapFolder) return { ok: false, token, idsnap: 0, data: null };
+
+      const [snapRes, dexRes, holdRes] = await Promise.all([
+        fetch(`/demo-data/snapshots/${snapFolder}/${token}.json`, { cache: "no-store" })
+          .then(r => r.ok ? r.json() : null).catch(() => null),
+        dexFolder
+          ? fetch(`/demo-data/dexscraptokens/${dexFolder}/all.json`, { cache: "no-store" })
+              .then(r => r.ok ? r.json() : null).catch(() => null)
+          : Promise.resolve(null),
+        holdFolder
+          ? fetch(`/demo-data/holders/${holdFolder}/${token}.json`, { cache: "no-store" })
+              .then(r => r.ok ? r.json() : []).catch(() => [])
+          : Promise.resolve([]),
+      ]);
+
+      if (!snapRes) return { ok: false, token, idsnap: 0, data: null };
+
+      const dexTok: any = Array.isArray(dexRes?.tokens)
+        ? (dexRes.tokens.find((t: any) => t.slug === token) ?? {})
+        : {};
+      const holders: any[] = Array.isArray(holdRes) ? holdRes : [];
+
+      const nholders_full = Number(snapRes.nholders_full || 0);
+      const supplyApprox = (dexTok.fdv && dexTok.price_usd && Number(dexTok.price_usd) > 0)
+        ? Number(dexTok.fdv) / Number(dexTok.price_usd)
+        : 0;
+
+      const total_holders_amount = holders.reduce((s, h) => s + Number(h.amount || 0), 0);
+
+      // Brackets USD para derivar an_tokens_sum_*.
+      const usdBrackets: Array<{ key: string; min: number; max: number | null }> = [
+        { key: "over50000",    min: 50000, max: null  },
+        { key: "10000to50000", min: 10000, max: 50000 },
+        { key: "5000to10000",  min: 5000,  max: 10000 },
+        { key: "1000to5000",   min: 1000,  max: 5000  },
+        { key: "500to1000",    min: 500,   max: 1000  },
+        { key: "100to500",     min: 100,   max: 500   },
+        { key: "under100",     min: 0,     max: 100   },
+      ];
+
+      const enriched: any = { ...snapRes };
+      enriched.name             = dexTok.name || token;
+      enriched.dex_price        = dexTok.price_usd ?? 0;
+      enriched.dex_supply_raw   = supplyApprox || total_holders_amount;
+      enriched.indx_supplyfound = total_holders_amount;
+      const lost = enriched.dex_supply_raw - total_holders_amount;
+      enriched.amount_lost = lost;
+      enriched.perc_lost   = enriched.dex_supply_raw > 0
+        ? +((lost / enriched.dex_supply_raw) * 100).toFixed(2)
+        : 0;
+
+      enriched.an_nholders_full      = nholders_full;
+      enriched.an_perc_nholders_full = nholders_full > 0
+        ? +((total_holders_amount / (enriched.dex_supply_raw || 1)) * 100).toFixed(2)
+        : 100;
+
+      // Mapeo acc_<bucket> -> an_nholders_<bucket> + an_perc_nholders_<bucket>
+      // + an_tokens_sum_<bucket> (sum de amounts de holders cuyos value_today
+      // caen en el rango).
+      for (const b of usdBrackets) {
+        const n = Number(snapRes[`acc_${b.key}`] || 0);
+        enriched[`an_nholders_${b.key}`]      = n;
+        enriched[`an_perc_nholders_${b.key}`] = nholders_full > 0
+          ? +((n / nholders_full) * 100).toFixed(2)
+          : 0;
+        let tokenSum = 0;
+        for (const h of holders) {
+          const usd = Number(h.value_today || 0);
+          const inBucket = b.max === null ? usd > b.min : (usd > b.min && usd <= b.max);
+          if (inBucket) tokenSum += Number(h.amount || 0);
+        }
+        enriched[`an_tokens_sum_${b.key}`] = tokenSum;
+      }
+
+      // over/under $100 totales — usados por la barra split de Tokens
+      // Distribution. nholders_over100 + nholders_under100 vienen del snap.
+      enriched.an_nholders_over100  = Number(snapRes.nholders_over100  || 0);
+      enriched.an_nholders_under100 = Number(snapRes.nholders_under100 || 0);
+
+      // Brackets por amount de tokens (tok_*) -> an_nholders_tokens_<bracket>
+      // + an_perc_nholders_tokens_<bracket>. Estos los lee Tokens Distribution
+      // para mostrar la grilla de bandas (+100M, 10M–100M, ..., 100–1k).
+      const tokenBrackets = [
+        "over100M", "10Mto100M", "5Mto10M", "1Mto5M",
+        "100kto1M", "10kto100k", "1kto10k", "100to1k",
+      ];
+      for (const tb of tokenBrackets) {
+        const n = Number(snapRes[`tok_${tb}`] || 0);
+        enriched[`an_nholders_tokens_${tb}`]      = n;
+        enriched[`an_perc_nholders_tokens_${tb}`] = nholders_full > 0
+          ? +((n / nholders_full) * 100).toFixed(2)
+          : 0;
+      }
+
+      // dex_main_pool_found + dex_full_info.pools_high desde raw_pairs.
+      const pairs: any[] = Array.isArray(dexTok.raw_pairs) ? dexTok.raw_pairs : [];
+      if (pairs.length > 0) {
+        const main = pairs[0];
+        const fmt = (n: any) => Number(n || 0).toLocaleString(undefined, { maximumFractionDigits: 2 });
+        enriched.dex_main_pool_found = {
+          dexId:               main?.dexId ?? "",
+          pool_address:        main?.pairAddress ?? "",
+          liq_usd:             fmt(main?.liquidity?.usd),
+          liq_base:            fmt(main?.liquidity?.base),
+          liq_quote:           fmt(main?.liquidity?.quote),
+          quotetoken_symbol:   main?.quoteToken?.symbol ?? "",
+          createdAt_formatted: main?.pairCreatedAt
+            ? new Date(main.pairCreatedAt).toISOString().slice(0, 10)
+            : "",
+        };
+        enriched.dex_full_info = { pools_high: pairs.slice(0, 20) };
+      } else {
+        enriched.dex_main_pool_found = null;
+        enriched.dex_full_info = { pools_high: [] };
+      }
+
+      return { ok: true, token, idsnap: parseInt(String(snapRes?.runts ?? "0")), data: enriched };
     } catch {
       return { ok: false, token, idsnap: 0, data: null };
     }

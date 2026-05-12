@@ -1,9 +1,9 @@
 "use client";
 
 // Landing principal del demo, clonada de sb_satelldex/front/app/page.tsx.
-// El dashboard (sign gate + tracked tokens + community gauge) se movio a
-// /tracked. Esta ruta es marketing: hero + statsbar + hexnode + pillars +
-// plans + banner hackathon. Sin sign gate.
+// Ruta marketing: hero + statsbar + hexnode + pillars + plans + banner
+// hackathon. Sin sign gate. La vista per-token con firma + holders vive
+// en /hackathonview, no en este home.
 
 import Navbarx_home from "./layout/navbarhome";
 import SecHero      from "./home/sec1_hero";

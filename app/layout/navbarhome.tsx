@@ -19,7 +19,6 @@ const WalletMultiButton = dynamic(
 
 const NAV_ITEMS = [
   { name: "WHAT IS",   route: "/" },
-  { name: "DASHBOARD", route: "/tracked" },
   { name: "GLOBAL",    route: "/global" },
   { name: "HACKATHON", route: "/hackathonview" },
 ];

@@ -1,7 +1,7 @@
 # summary.md — SatellDex Demo
-# version: 2.4 (12-may-26 02:42)
-# tokens: ~8600
-# lineas: 710
+# version: 2.7 (12-may-26 02:54)
+# tokens: ~8700
+# lineas: 719
 
 > Concept proof of **on-chain Solana holder intelligence** with community-
 > driven token tracking. Built for the Colosseum Solana Frontier Hackathon
@@ -135,6 +135,17 @@ sb_satelldexdemo/
 │   │   │                          enrichHolders + buildSnapshotRich
 │   │   └── demoSdk.ts          ← Sdkrout_back compatible · fetch local +
 │   │                              snap_index para auto-detect del folder.
+│   │                              fetch_snapshot_latest enriquece el snap
+│   │                              rico con dex + holders para devolver el
+│   │                              shape gordo que sec_datatext espera:
+│   │                              an_nholders_<usd_bucket> + an_perc_nholders_*
+│   │                              + an_tokens_sum_* (7 buckets USD) +
+│   │                              an_nholders_tokens_<token_bracket> +
+│   │                              an_perc_nholders_tokens_* (8 buckets token
+│   │                              amount) + an_nholders_over100/under100 +
+│   │                              dex_price/name/dex_supply_raw +
+│   │                              indx_supplyfound/amount_lost/perc_lost +
+│   │                              dex_main_pool_found + dex_full_info.pools_high.
 │   │                              Reemplaza el SDK del backend prod en
 │   │                              hackathonview + globalhackathon
 │   ├── layout/
@@ -157,7 +168,7 @@ sb_satelldexdemo/
 │   │   ├── sec3_hexnode.tsx    ← node card con scan line · imagen
 │   │   │                          /assets/Node.png
 │   │   ├── sec4_pillars.tsx    ← HOLDER SCAN / LIQMAP / TIME SERIES
-│   │   ├── sec5_plans.tsx      ← cards FREE (→ /tracked) + ALPHA (→ /global)
+│   │   ├── sec5_plans.tsx      ← cards FREE (→ /hackathonview) + ALPHA (→ /global)
 │   │   └── sec6_communityreq.tsx ← tabla de requests · fetch
 │   │                              /api/community_request
 │   ├── tracked/
@@ -306,8 +317,6 @@ declaran su propio `"use client"`.
 Ruta                     | Mensaje firmado                              | Contenido
 -------------------------|----------------------------------------------|----------------------------------
 /                        | (sin firma)                                  | Landing marketing (hero, plans, ...)
-/tracked                 | satelldex-demo:view-tokens                   | Tracked Tokens + Community Gauge
-/tracked #vote           | satelldex-demo:vote:<slug>                   | gauge gamificado (firma por voto)
 /global                  | satelldex-demo:view-global                   | Global VIP Dashboard (3 HUD tabs)
 /requiretoken            | satelldex-demo:require-token:<ts>:<addr>     | Form CRUD para community requests
 /api/community_request   | (GET) sin firma · (POST) requiere firma      | Lista + append de community requests
@@ -331,7 +340,7 @@ Ruta                     | Mensaje firmado                              | Conten
                          |                                              |     sign por tab
 ```
 
-Las rutas con sign gate (/tracked, /global) re-piden firma en cada refresh
+Las rutas con sign gate (/global, /hackathonview, /globalhackathon) re-piden firma en cada refresh
 (sin cookies ni localStorage). La landing / y el form /requiretoken son
 publicos; el POST de /api/community_request valida ed25519 + anti-replay
 de 300s.
@@ -429,7 +438,7 @@ banner hackathon  | CTA a /hackathonview y /globalhackathon para jueces del
                   |
 SecHero           | Terminal animado (Comp_TextAnimation) + headline gradient
                   | + Comp_MetricsRoller full-bleed (fuera del container 1280)
-                  | + VipCard (link /tracked) + Comp_TokenSelector (lee
+                  | + VipCard (link /hackathonview) + Comp_TokenSelector (lee
                   | targets.json + dexscraptokens.json, una sola seccion
                   | "Memes" con los 8 slugs reales) + SecCommunityReq
                   | (lee /api/community_request) + VipInterestButton (demo
@@ -442,7 +451,7 @@ SecHexnode        | Card del nodo con imagen /assets/Node.png, scan line
                   |
 SecPillars        | HOLDER SCAN, LIQMAP, TIME SERIES (3 cards "How it works").
                   |
-SecPlans          | FREE (-> /tracked) + ALPHA (-> /global). Sin /demovip,
+SecPlans          | FREE (-> /hackathonview) + ALPHA (-> /global). Sin /demovip,
                   | /freetoken ni /payment (esas rutas no existen en demo).
 ```
 
@@ -693,7 +702,7 @@ npx tsx makesnap.ts
 ```
 1. Land on /                                  ← landing marketing
 2. Banner judges → /hackathonview             ← (Fase 2 pendiente)
-3. "OPEN DEMO ↗" del plan FREE                ← /tracked
+3. "OPEN DEMO ↗" del plan FREE                ← /hackathonview
 4. Sign "satelldex-demo:view-tokens"          ← dashboard de tokens unlock
 5. Click any token chip                       ← 3 distributions + top 100
 6. Community Gauge (3 pending tokens)         ← vote +1 firmando cada vez

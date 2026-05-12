@@ -23,7 +23,7 @@ yarn build && yarn start       # production build
 
 ```
 /                      landing marketing (hero + plans + pillars)
-/tracked               dashboard de tracked tokens (sign gate)
+(/tracked eliminada — la vista per-token vive en /hackathonview)
 /global                global VIP dashboard (sign gate, 3 HUD tabs)
 /requiretoken          form CRUD: pedir un nuevo token
 /api/community_request GET (lista) / POST (append firma admin/usuario)
@@ -163,7 +163,7 @@ Respuesta:
 }
 ```
 
-El front de `/tracked` y de `Comp_TokenSelector` consultan este endpoint
+El front de `/hackathonview` (via demoSdk) y de `Comp_TokenSelector` consultan este endpoint
 y construyen los paths de fetch contra `<latest>/<slug>.json`.
 
 #### F1 — dexscraptokens.json shape:
@@ -221,7 +221,7 @@ campos sin re-scrapear.
 ```
 ca, runts, when                               identificadores
 an_perc_top10/20/50/100, an_perc_bigpool      compat sec_datatext_hackathon
-liq_bigpool, liq_top1_10, liq_top11_20,       compat /tracked DistCards
+liq_bigpool, liq_top1_10, liq_top11_20,       liquidity distribution
   liq_top21_50, liq_top51_100, liq_others
 acc_over50000 / 10000to50000 / 5000to10000 /  buckets USD
   1000to5000 / 500to1000 / 100to500 / under100

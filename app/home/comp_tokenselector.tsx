@@ -14,11 +14,11 @@ const WalletMultiButton = dynamic(
   { ssr: false }
 );
 
-// Card grande VIP: link al dashboard /tracked del demo.
+// Card grande VIP: link a la vista de jueces /hackathonview.
 export function VipCard() {
   return (
     <a
-      href="/tracked"
+      href="/hackathonview"
       style={{
         display: "inline-flex",
         alignItems: "stretch",
@@ -219,7 +219,7 @@ export function Comp_TokenSelector() {
             return (
               <a
                 key={tok}
-                href={`/tracked?token=${tok}`}
+                href={`/hackathonview`}
                 className="freetokens-chip"
                 style={{
                   display: "inline-flex",

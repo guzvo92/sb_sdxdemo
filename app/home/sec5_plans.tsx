@@ -1,5 +1,5 @@
 // Dos planes: FREE (Demo Free) y VIP/ALPHA (early adopter).
-// En el demo los hrefs se redirigen a /tracked (dashboard del demo).
+// FREE -> /hackathonview (vista jueces) · ALPHA -> /global.
 // El boton ALPHA queda informativo (no hay backend para registrar interes).
 
 const FREE_FEATURES = [
@@ -112,7 +112,7 @@ export default function SecPlans() {
             </ul>
 
             <a
-              href="/tracked"
+              href="/hackathonview"
               style={{
                 display: "block",
                 textAlign: "center",
