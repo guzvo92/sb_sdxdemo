@@ -15,10 +15,13 @@ interface SnapIndex {
   dexscraptokens: { folders: string[]; latest: string | null };
 }
 
-// Cache singleton del index dentro del ciclo de vida de la pagina.
+// Cache con TTL corto: 5s para no spamear el endpoint en re-renders pero
+// permitir que un REGEN reciente aparezca sin recargar la pagina entera.
 let cachedIdx: SnapIndex | null = null;
+let cachedIdxAt = 0;
+const IDX_TTL_MS = 5000;
 async function getIdx(): Promise<SnapIndex> {
-  if (cachedIdx) return cachedIdx;
+  if (cachedIdx && Date.now() - cachedIdxAt < IDX_TTL_MS) return cachedIdx;
   const r = await fetch("/api/snap_index", { cache: "no-store" });
   const d = await r.json();
   cachedIdx = {
@@ -26,6 +29,7 @@ async function getIdx(): Promise<SnapIndex> {
     holders:        d.holders        ?? { folders: [], latest: null },
     dexscraptokens: d.dexscraptokens ?? { folders: [], latest: null },
   };
+  cachedIdxAt = Date.now();
   return cachedIdx;
 }
 

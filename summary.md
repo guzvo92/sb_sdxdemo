@@ -1,7 +1,7 @@
 # summary.md — SatellDex Demo
-# version: 3.1 (12-may-26 09:23)
-# tokens: ~8993
-# lineas: 696
+# version: 3.2 (12-may-26 10:09)
+# tokens: ~9170
+# lineas: 705
 
 > Concept proof of **on-chain Solana holder intelligence** with community-
 > driven token tracking. Built for the Colosseum Solana Frontier Hackathon
@@ -136,6 +136,10 @@ sb_satelldexdemo/
 │   │   │                          enrichHolders + buildSnapshotRich
 │   │   └── demoSdk.ts          ← Sdkrout_back compatible · fetch local +
 │   │                              snap_index para auto-detect del folder.
+│   │                              getIdx() cachea el index con TTL de 5s
+│   │                              (IDX_TTL_MS) para que un REGEN reciente
+│   │                              aparezca sin reload manual y sin spamear
+│   │                              el endpoint en re-renders.
 │   │                              fetch_snapshot_latest enriquece el snap
 │   │                              rico con dex + holders para devolver el
 │   │                              shape gordo que sec_datatext espera:
@@ -227,7 +231,12 @@ sb_satelldexdemo/
 │   │                                       disabled "available in VIP")
 │   ├── globalhackathon/        ← Vista global jueces Colosseum
 │   │   ├── page.tsx                       ← 2 HUD tabs (snapshot + clusters
-│   │   │                                     by token) · firma por tab
+│   │   │                                     by token) · firma por tab ·
+│   │   │                                     panel "SNAPSHOTS AVAILABLE"
+│   │   │                                     arriba de los tabs lista
+│   │   │                                     folders YYYY_MM_DD__HH_MM con
+│   │   │                                     chip "latest" para el ultimo
+│   │   ├── chartjs.d.ts                   ← window.Chart type declaration
 │   │   ├── sec_yestmul_liqclust_h.tsx    ← liquidity clusters comparativo
 │   │   ├── sec_yestmul_nwalls_h.tsx      ← wallets USD bucket counts
 │   │   ├── sec_yestmul_nwallsper_h.tsx   ← wallets USD bucket %

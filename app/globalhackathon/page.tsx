@@ -80,6 +80,7 @@ export default function GlobalHackathonPage() {
   const [memeTokens, setMemeTokens] = useState<string[]>([]);
   const [memeCategory, setMemeCategory] = useState<Category | null>(null);
   const [fullGlobal, setFullGlobal] = useState<any[]>([]);
+  const [snapFolders, setSnapFolders] = useState<string[]>([]);
   // activeHud parte en null: el juez debe firmar para abrir cualquier tab
   const [activeHud, setActiveHud]   = useState<HudKey | null>(null);
   const [signedHud, setSignedHud]   = useState<HudKey | null>(null);
@@ -131,10 +132,16 @@ export default function GlobalHackathonPage() {
   useEffect(() => {
     (async () => {
       try {
-        const [catRes, histRes] = await Promise.all([
+        // /api/snap_index expuesto en la UI como lista clickeable arriba
+        // de los HUD tabs — el juez ve cuantos snapshots hay y sus fechas.
+        const [catRes, histRes, idxRes] = await Promise.all([
           sdk.fetch_category_list(),
           sdk.fetch_globalrun_history(),
+          fetch("/api/snap_index", { cache: "no-store" })
+            .then(r => r.ok ? r.json() : null).catch(() => null),
         ]);
+        if (idxRes?.snapshots?.folders) setSnapFolders(idxRes.snapshots.folders);
+
         if (!catRes.ok) return;
         const memes = catRes.categories.find(c => c.name?.toLowerCase() === MEMES_CATEGORY_NAME);
         if (!memes) return;
@@ -157,6 +164,24 @@ export default function GlobalHackathonPage() {
       finally { setLoading(false); }
     })();
   }, []);
+
+  // Formatea YYYY_MM_DD__HH_MM (UTC en disco) a hora local del browser.
+  // Si el folder no tiene sufijo de hora, muestra solo la fecha.
+  const fmtFolder = (f: string): string => {
+    const m = f.match(/^(\d{4})_(\d{2})_(\d{2})(?:__(\d{2})_(\d{2}))?$/);
+    if (!m) return f;
+    const [, y, mo, d, hh, mn] = m;
+    const hasTime = !!(hh && mn);
+    const utc = new Date(Date.UTC(
+      parseInt(y), parseInt(mo) - 1, parseInt(d),
+      hasTime ? parseInt(hh) : 0,
+      hasTime ? parseInt(mn) : 0,
+    ));
+    const opts: Intl.DateTimeFormatOptions = hasTime
+      ? { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }
+      : { day: "numeric", month: "short" };
+    return utc.toLocaleString(undefined, opts);
+  };
 
   // Adapta el shape al que esperan los componentes copiados
   const fullGlobalForBarcharts = fullGlobal;
@@ -220,6 +245,40 @@ export default function GlobalHackathonPage() {
                 tokens in this cross-view · click any to inspect individually in /hackathonview
               </p>
             </>
+          )}
+
+          {/* Panel visible de snapshots disponibles — listado read-only que
+              confirma cuantos folders YYYY_MM_DD__HH_MM existen en disco.
+              Los charts de abajo consumen TODOS estos snapshots ya. */}
+          {snapFolders.length > 0 && (
+            <div style={{
+              background: "#0d1117", border: "1px solid #1e293b",
+              borderRadius: 8, padding: "12px 16px", marginBottom: 18,
+            }}>
+              <p style={{
+                fontFamily: "'Press Start 2P', monospace", fontSize: 9,
+                color: "#06b6d4", letterSpacing: "0.10em", margin: "0 0 10px",
+              }}>
+                ◈ {snapFolders.length} SNAPSHOT{snapFolders.length === 1 ? "" : "S"} AVAILABLE
+              </p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                {snapFolders.map((f, i) => {
+                  const isLatest = i === snapFolders.length - 1;
+                  return (
+                    <span key={f} style={{
+                      fontFamily: "monospace", fontSize: 10,
+                      padding: "4px 10px", borderRadius: 4,
+                      letterSpacing: "0.04em",
+                      background: isLatest ? "rgba(6,182,212,0.12)" : "transparent",
+                      border: `1px solid ${isLatest ? "#06b6d4" : "#334155"}`,
+                      color: isLatest ? "#06b6d4" : "#94a3b8",
+                    }}>
+                      {fmtFolder(f)}{isLatest ? " · latest" : ""}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
           )}
 
           {/* HUD tabs — cada tab requiere firma para verse */}
