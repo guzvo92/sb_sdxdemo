@@ -129,3 +129,23 @@ docker restart satelldexdemo
 ```
 
 `.env.local` is gitignored.
+
+## Documents
+
+The pitch deck and demo videos live outside the repo at:
+
+```
+/home/gman/asdb/dockersprod/sb_satelldexdemo/zdocuments/
+```
+
+Contents:
+
+```
+  File                     | Purpose
+  -------------------------|------------------------------------------
+  decksatelldex_v1.pdf     | Pitch deck (PDF export)
+  decksatelldex_v1.pptx    | Pitch deck (PowerPoint source)
+  demovideo.mp4            | Product walkthrough — app in action
+  pitch.mp4                | Recorded pitch presentation
+```
+

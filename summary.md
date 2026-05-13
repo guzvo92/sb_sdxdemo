@@ -1,7 +1,7 @@
 # summary.md — SatellDex Demo
-# version: 3.2 (12-may-26 10:09)
-# tokens: ~9170
-# lineas: 705
+# version: 3.3 (12-may-26 18:43)
+# tokens: ~9369
+# lineas: 715
 
 > Concept proof of **on-chain Solana holder intelligence** with community-
 > driven token tracking. Built for the Colosseum Solana Frontier Hackathon
@@ -268,11 +268,21 @@ sb_satelldexdemo/
 │                                 snapshot rico por CA). Disparado por
 │                                 /api/regenerate F2 via child_process.spawn,
 │                                 o manual: npx tsx makesnap.ts
+├── zdocuments/                 ← deck + videos del hackathon (fuera del
+│   ├── decksatelldex_v1.pdf    │  flujo de la app, solo material de
+│   ├── decksatelldex_v1.pptx   │  presentacion). Apuntado desde el
+│   ├── demovideo.mp4           │  README en seccion "Documents".
+│   └── pitch.mp4               │  demovideo.mp4 vivia antes en root,
+│                               │  se movio aca para agrupar todo el
+│                               │  material de pitch en una carpeta.
 ├── package.json
 ├── tsconfig.json
 ├── next.config.ts
 ├── postcss.config.mjs
-├── README.md                   ← run instructions + snapshot pipeline
+├── README.md                   ← run instructions + snapshot pipeline +
+│                                  seccion "Documents" con el path local
+│                                  /home/gman/asdb/dockersprod/sb_satelldexdemo/zdocuments
+│                                  (equivalente a ./zdocuments dentro del repo)
 └── summary.md                  ← this file
 ```
 
