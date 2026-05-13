@@ -1,5 +1,22 @@
 # SatellDex Demo
 
+> # 📂 DOCUMENTS — PITCH DECK & VIDEOS
+>
+> **All pitch material lives at:**
+>
+> ### `/home/gman/asdb/dockersprod/sb_satelldexdemo/zdocuments/`
+>
+> ```
+>   File                     | Purpose
+>   -------------------------|------------------------------------------
+>   decksatelldex_v1.pdf     | 📄 Pitch deck (PDF export)
+>   decksatelldex_v1.pptx    | 📊 Pitch deck (PowerPoint source)
+>   demovideo.mp4            | 🎥 Product walkthrough — app in action
+>   pitch.mp4                | 🎤 Recorded pitch presentation
+> ```
+
+---
+
 A Next.js demo of **Solana Holder Intelligence**: a marketing landing
 page, a per-token dashboard, a global multi-token view, a community
 request form, and an admin button that refreshes the on-chain data.
@@ -129,23 +146,4 @@ docker restart satelldexdemo
 ```
 
 `.env.local` is gitignored.
-
-## Documents
-
-The pitch deck and demo videos live outside the repo at:
-
-```
-/home/gman/asdb/dockersprod/sb_satelldexdemo/zdocuments/
-```
-
-Contents:
-
-```
-  File                     | Purpose
-  -------------------------|------------------------------------------
-  decksatelldex_v1.pdf     | Pitch deck (PDF export)
-  decksatelldex_v1.pptx    | Pitch deck (PowerPoint source)
-  demovideo.mp4            | Product walkthrough — app in action
-  pitch.mp4                | Recorded pitch presentation
-```
 
