@@ -4,7 +4,7 @@
 >
 > **All pitch material lives at:**
 >
-> ### `/home/gman/asdb/dockersprod/sb_satelldexdemo/zdocuments/`
+> ### `./zdocuments/`
 >
 > ```
 >   File                     | Purpose

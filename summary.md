@@ -1,7 +1,7 @@
 # summary.md — SatellDex Demo
-# version: 3.3 (12-may-26 18:43)
-# tokens: ~9369
-# lineas: 715
+# version: 3.4 (12-may-26 19:05)
+# tokens: ~9344
+# lineas: 714
 
 > Concept proof of **on-chain Solana holder intelligence** with community-
 > driven token tracking. Built for the Colosseum Solana Frontier Hackathon
@@ -280,9 +280,8 @@ sb_satelldexdemo/
 ├── next.config.ts
 ├── postcss.config.mjs
 ├── README.md                   ← run instructions + snapshot pipeline +
-│                                  seccion "Documents" con el path local
-│                                  /home/gman/asdb/dockersprod/sb_satelldexdemo/zdocuments
-│                                  (equivalente a ./zdocuments dentro del repo)
+│                                  seccion "Documents" al inicio apuntando
+│                                  a ./zdocuments/ (path relativo al repo)
 └── summary.md                  ← this file
 ```
 
