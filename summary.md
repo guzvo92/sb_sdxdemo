@@ -1,5 +1,5 @@
 # summary.md — SatellDex Demo
-# version: 3.4 (12-may-26 19:05)
+# version: 3.5 (12-may-26 19:08)
 # tokens: ~9344
 # lineas: 714
 
@@ -685,8 +685,8 @@ docker exec satelldexdemo npx tsx makesnap.ts --dry-run
 # top N distinto (default 100)
 docker exec satelldexdemo npx tsx makesnap.ts --top 50
 
-# desde el host
-cd /home/gman/asdb/dockersprod/sb_satelldexdemo
+# desde el host (correr desde el root del repo)
+cd <repo-root>
 npx tsx makesnap.ts
 ```
 
