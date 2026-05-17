@@ -1,4 +1,7 @@
 # SatellDex Demo
+# this is a local version that works without vps infra, routing nginx, permisive endpoints,
+# docker deployment, for hackathon demo as proof of concept.
+# full functional site are deployed on satelldex.com
 
 > # 📂 DOCUMENTS — PITCH DECK & VIDEOS
 >
